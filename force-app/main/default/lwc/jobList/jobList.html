@@ -1,0 +1,37 @@
+<template>
+
+	<br>
+	<br>
+	<div class="slds-m-bottom_small slds-m-left_medium ">
+		<h1>{label.mainTitle} <b>{nameofaccounttreatment}</b></h1>
+	</div>
+	<div class="slds-m-top_medium slds-m-left_x-large slds-m-right_x-large">
+
+		<template if:true={jobs.data}>
+			<!--<template for:each={jobs.data} for:item="job">
+				<lightning-accordion key={job.Id} allow-multiple-sections-open>
+					<lightning-accordion-section name={job.Name} label={job.Name} key={job.Id}
+						class="slds-col slds-size_1-of-1">
+						<c-job-tile job={job} ondeleterefresh={handledeleterefresh} accounttreatmentstatus={accounttreatmentstatus}
+							selectedrecordtype={selectedrecordtype} class="job-tile"></c-job-tile>
+					</lightning-accordion-section>
+					<lightning-layout padding="around-large">
+						<lightning-layout-item key={job.Id} padding="around-large">
+						</lightning-layout-item>
+					</lightning-layout>
+				</lightning-accordion>
+			</template>-->
+
+			<template for:each={jobs.data} for:item="job">
+				<c-job-tile key={job.Id} job={job} ondeleterefresh={handledeleterefresh} accounttreatmentstatus={accounttreatmentstatus}
+					selectedrecordtype={selectedrecordtype} onactivitiesscheduled={handleActivitiesScheduled}></c-job-tile>
+			</template>
+		</template>
+
+		<template if:true={jobs.error}>
+			<div class="slds-text-color_error">
+				please select the jobs
+			</div>
+		</template>
+	</div>
+</template>

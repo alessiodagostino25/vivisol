@@ -1,0 +1,22 @@
+<template>  
+    <h2 class="inlineTitle slds-p-top--large slds-p-horizontal--medium slds-p-bottom--medium slds-text-heading--medium" data-aura-rendered-by="2:1962;a">{label.labelTitleWizard}</h2> 
+    <div class="contain slds-grid slds-wrap slds-m-around_small">
+        
+        <div class="slds-col slds-size_1-of-1">
+            <c-quote-line-item-progress-bar current-step={currentStep}></c-quote-line-item-progress-bar>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-quote-line-item-search-select-product page1={page1} record-id={recordId} 
+            onnextbuttonstep={handlenextbuttonsteptwo} quote-status={quoteStatus} reload-step1={reloadStep1} 
+            onexitpricequantity={handleExitPriceQuantity} list-items={listItems} is-button-disabled={isButtonDisabled}
+            search-data={searchData} total-products={totalProducts} selected={selected} 
+            selected-products={selectedProducts} str-search-product-name={strSearchProductName}></c-quote-line-item-search-select-product>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-quote-line-item-configure-price-quantity page1={page1} page2={page2} page3={page3} record-id={recordId} records-to-analize={recordsToAnalize} quote-status={quoteStatus} onnextbuttonstep={handlenextbuttonstepthree} onexitpricequantity={handleExitPriceQuantity} reload-step2={reloadStep2}></c-quote-line-item-configure-price-quantity>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+           <c-quote-line-item-get-price-edit page1={page1} page2={page2} page3={page3}  record-id={recordId} onexitpriceedit={handleExitPriceEdit} quote-status={quoteStatus}  oncloseclicked={closeclicked} records-to-analize={recordsToAnalize} reload-step3={reloadStep3}></c-quote-line-item-get-price-edit> 
+        </div>   
+    </div>
+</template>

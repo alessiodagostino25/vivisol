@@ -1,0 +1,48 @@
+<template>
+    <template if:true={page2b}>
+        <template if:true={isLoading}>
+            <div class="Holder">
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <c-family-selection if:true={viewFamilySelection} contract-framework-record-id={contractFrameworkRecordId}
+            corporate-treatment-id={corporateTreatmentId} corporate-treatment-job={corporateTreatmentJob}
+            contract-treatment-job-id={contractTreatmentJobId} current-step={currentStep}
+            pre-selected-rows={selectedFamilies} contract-treatment-job-name={contractTreatmentJobName}>
+        </c-family-selection>
+        <c-product-selection if:true={viewProductSelection} contract-framework-record-id={contractFrameworkRecordId}
+            corporate-treatment-id={corporateTreatmentId} corporate-treatment-job={corporateTreatmentJob}
+            contract-treatment-job-id={contractTreatmentJobId} view-product-selection={viewProductSelection}
+            selected-family-ids={selectedFamilies} current-step={currentStep}
+            contract-treatment-job-name={contractTreatmentJobName}></c-product-selection>
+        <c-product-configuration-step if:true={viewProductConfigurationStep} current-step={currentStep}
+            families-and-products={familiesAndProducts} contract-treatment-job-id={contractTreatmentJobId}
+            view-product-configuration-step={viewProductConfigurationStep}
+            contract-framework-record-id={contractFrameworkRecordId} corporate-treatment-id={corporateTreatmentId}
+            corporate-treatment-job={corporateTreatmentJob} contract-treatment-job-name={contractTreatmentJobName}
+            framework-is-active={frameworkIsActive} framework-is-inactive={frameworkIsInactive}>
+        </c-product-configuration-step>
+        <div class="slds-col slds-size_10-of-12 slds-m-bottom_medium">
+            <span></span>
+        </div>
+
+        <template if:true={fatherButtonsDisabled}>
+            <div class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+                <div class="slds-col slds-p-around_medium">
+                    <lightning-button variant="brand" label={label.ProductConfigBack} title={label.ProductConfigBack}
+                        onclick={handleBackClick}></lightning-button>
+                </div>
+                <div if:false={viewProductConfigurationStep} class="slds-col slds-p-around_medium">
+                    <lightning-button disabled={isLoading} variant="brand" label={label.ProductConfigNext} title={label.ProductConfigNext}
+                        onclick={handleNextClick}></lightning-button>
+                </div>
+                <div if:true={viewProductConfigurationStep} class="slds-col slds-p-around_medium">
+                    <lightning-button variant="brand" label={label.ProductConfigBackToJobs}
+                        title={label.ProductConfigBackToJobs} onclick={handleNextClick}></lightning-button>
+                </div>
+            </div>
+        </template>
+    </template>
+
+</template>

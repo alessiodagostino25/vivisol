@@ -1,0 +1,30 @@
+<template>
+    <lightning-card>
+        <div class="slds-m-bottom_small">
+       {label.mainTitle} <b>{jobname}</b>
+       </div>
+        
+        <div if:true={products.data} class="slds-m-top_medium slds-m-left_x-large slds-m-right_x-large">
+            <template for:each={products.data} for:item="product">
+                <lightning-accordion key={product.Id} allow-multiple-sections-open>
+                    <lightning-accordion-section name={product.ProductName__c} label={product.ProductName__c}
+                        key={product.Id} class="slds-col slds-size_1-of-1">
+                        <c-account-treatment-product-configuration accounttreatmentstatus={accounttreatmentstatus} ondeleterefreshproduct={handlerefreshproduct}
+                            product={product} class="job-tile">
+                        </c-account-treatment-product-configuration>
+                    </lightning-accordion-section>
+                    <lightning-layout padding="around-large">
+                        <lightning-layout-item key={product.Id} padding="around-large">
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-accordion>
+            </template>
+        </div>
+        <div if:false={products.data} class="slds-m-top_medium slds-m-left_x-large slds-m-right_x-large">
+            <lightning-spinner alternative-text="Loading..." size="medium">
+            </lightning-spinner>
+            <p>THERE ARE NO PRODUCTS RELATED TO THE ACCOUNT TREATMENT JOB
+            </p>
+        </div>
+    </lightning-card>
+</template>

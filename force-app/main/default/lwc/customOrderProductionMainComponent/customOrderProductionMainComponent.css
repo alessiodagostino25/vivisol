@@ -1,0 +1,15 @@
+.c-container {
+    position: relative;
+    box-shadow: none;
+    padding: 0px;
+    background: padding-box rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(212, 212, 212);
+    border-image: initial;
+    border-radius: 0.25rem;
+}
+.marginfornext{
+    margin-left: 78px;
+
+}

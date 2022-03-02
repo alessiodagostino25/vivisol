@@ -1,0 +1,15 @@
+<aura:component
+    implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,forceCommunity:availableForAllPageTypes,force:lightningQuickAction,lightning:isUrlAddressable"
+    access="global">
+    <!--S:SIDEA V4AT-182-->
+    <aura:attribute name="crecordId" type="String" />
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:attribute name="parentFieldId" access="global" type="String" />
+    <aura:attribute name="show" type="Boolean" default="false" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+
+    <div class="slds-theme_default">
+        <c:newPrescriptionComponent recId='{!v.crecordId}' onsavedprescription='{!c.closeTabPrescription}'/>
+    </div>
+    <!--E:SIDEA V4AT-182-->
+</aura:component>

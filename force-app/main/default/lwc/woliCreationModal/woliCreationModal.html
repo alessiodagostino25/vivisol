@@ -1,0 +1,195 @@
+<template>
+    <!-- First page to select the product -->
+
+    <template if:true={showTableModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.NewWOLI}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                    <h1 class="slds-text-heading_small">{labels.Selection}</h1>
+
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-p-around_medium lgc-bg">
+                            <div class="slds-is-relative slds-align_absolute-center">
+                                <div class="spinner">
+                                    <template if:false={pricebookEntries}>
+                                        <lightning-spinner alternative-text="Loading" size="medium">
+                                        </lightning-spinner>
+                                    </template>
+                                </div>
+                                <div class="spinner">
+                                    <template if:true={isLoading}>
+                                        <lightning-spinner alternative-text="Loading" size="medium">
+                                        </lightning-spinner>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div>
+                                <lightning-input name="enter-search" label=" " type="search" placeholder="Search Product..." 
+                                    onchange={handleSearchChange} >
+                                </lightning-input>
+                            </div>
+                            <br>
+
+                            <div if:false={isTableEmpty}>
+                                <!-- Desktop table -->
+
+                                <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right" if:false={isMobile}>
+                                    <lightning-datatable 
+                                        key-field="Id" 
+                                        data={pricebookEntries}
+                                        columns={desktopColumns} 
+                                        onrowselection={handleRowSelection}
+                                        max-row-selection="1">
+                                    </lightning-datatable>
+                                </div>
+
+                                <!-- Mobile table -->
+
+                                <div class="slds-max-medium-table_stacked slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right" if:true={isMobile}>
+                                    <lightning-datatable 
+                                        key-field="Id" 
+                                        data={pricebookEntries}
+                                        columns={mobileColumns} 
+                                        onrowselection={handleRowSelection}
+                                        max-row-selection="1">
+                                    </lightning-datatable>
+                                </div>
+
+                            </div>
+                            <div if:true={isTableEmpty}>
+                                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                                    <span class="slds-assistive-text">Warning</span>
+                                    <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                                    </span>
+                                    <h2>{labels.NoElements}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-modal__footer_directional">
+                    <div class="slds-grid slds-wrap slds-float_left">
+                        <button class="slds-button slds-button_brand"
+                            onclick={handleBack}>{labels.Back}
+                        </button>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-float_right">
+                        <button class="slds-button slds-button_brand"
+                            onclick={handleNext} disabled={hideNext}>{labels.Next}
+                        </button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Second page to select the quantity -->
+
+    <template if:true={showQuantityModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+        aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                    size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                </lightning-button-icon>
+                <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">{labels.NewWOLI}</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                <div if:true={creationLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+                
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                        <p>Details</p>
+                    </div>
+                    <!--<div if:false={creationLoading}>-->
+
+                        <!--<lightning-input name="next" label="Quantity" type="number" value = "1"
+                            onchange={handleQuantityChange} variant="label-inline">
+                        </lightning-input>-->
+                    <!--</div>-->
+
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-record-edit-form object-api-name="WorkOrderLineItem" onsubmit={handleSubmit}>
+                            <lightning-messages></lightning-messages>
+                            <lightning-input-field value="1.0" variant="label-inline" field-name="Quantity"></lightning-input-field>
+                            <lightning-input-field 
+                                variant="label-inline" 
+                                field-name="Movement_Type__c" 
+                                value={movementTypeValue} 
+                                disabled={isMovementTypeDisabled}>
+                            </lightning-input-field>
+                            <div if:false={disableAssetSelection}>
+                                <c-lookup
+                                    errors={errors}
+                                    onsearchforrelatedassets={handleAssetSearch}
+                                    pricebook-entry-id={selectedPricebookEntryId}
+                                    onselectionchange={handleAssetSelectionChange}
+                                    label="Asset"
+                                    placeholder="Search Assets..."
+                                    is-multi-entry={isMultiEntry}
+                                >
+                                </c-lookup>
+                            </div>
+                            <div if:true={showLocationFields}>
+                                <!-- <c-lookup
+                                    errors={errors}
+                                    onsearchforrelatedassets={handlePlantSearch}
+                                    pricebook-entry-id={selectedPricebookEntryId}
+                                    onselectionchange={handlePlantSelectionChange}
+                                    label="Plant"
+                                    placeholder="Search Plants..."
+                                    is-multi-entry={isMultiEntry}
+                                >
+                                </c-lookup> -->
+                                <!-- <c-lookup
+                                    errors={errors}
+                                    onsearchforrelatedassets={handleStorageLocationSearch}
+                                    pricebook-entry-id={selectedPricebookEntryId}
+                                    onselectionchange={handleStorageLocationSelectionChange}
+                                    label="Storage Location"
+                                    placeholder="Search Storage Locations..."
+                                    is-multi-entry={isMultiEntry}
+                                >
+                                </c-lookup> -->
+                                <lightning-input-field variant="label-inline" field-name="Plant__c" value={CTJPPlant}></lightning-input-field>
+                                <lightning-input-field variant="label-inline" field-name="StorageLocation__c" value={CTJPStorageLocation}></lightning-input-field>
+                            </div>
+                            <lightning-input-field variant="label-inline" field-name="Billable__c" value={CTJPBillable}></lightning-input-field>
+                            
+                            <lightning-button style="display: none;" variant="brand" label="Save" type="submit"></lightning-button>
+                        </lightning-record-edit-form>
+                    </div>
+                </div>
+            </div>
+            <footer class="slds-modal__footer slds-modal__footer_directional">
+                <div class="slds-grid slds-wrap slds-float_left">
+                    <button class="slds-button slds-button_brand"
+                        onclick={handleBackToTable}>{labels.Back}
+                    </button>
+                </div>
+
+                <div class="slds-grid slds-wrap slds-float_right">
+                    <button class="slds-button slds-button_brand"
+                        onclick={handleSave} disabled={hideSave} type="submit">{labels.Save}
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,117 @@
+<template>
+    <!-- Modalities List -->
+
+    <div if:false={showNewModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" 
+        class="slds-modal slds-fade-in-open slds-modal_medium slds-scrollable_y">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                            size="large" variant="bare-inverse" class="slds-modal__close" title="Close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{headingLabel}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium importantScrolling" id="modal-content-id-1" style="overflow: initial">
+                    <div class="slds-grid slds-wrap slds-m-around_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-wrap slds-grid_align-center">
+                                <div class="slds-col slds-size_1-of-1 slds-align_absolute-center">
+                                    <button class="slds-button slds-button_brand biggerButton" onclick={toggleNewModal}>{label.newLabel}</button>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-m-top_small">
+                                    <template for:each={contractTreatmentModalities} for:item="modality">
+                                        <c-contract-treatment-modality-card 
+                                            key={modality.id} 
+                                            contract-treatment-modality-id={modality.id}
+                                            framework-status={CTFrameworkStatus}
+                                            ondelete={refreshCTModalities}
+                                            record-type-name={recordTypeName}
+                                            onupdate={refreshCTModalities}>
+                                        </c-contract-treatment-modality-card>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" type="submit" label={label.saveAndCloseLabel} 
+                        onclick={handleSaveAndCloseClick}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+
+    <!-- Creation Modal -->
+
+    <div if:true={showNewModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" 
+        class="slds-modal slds-modal_small slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                            size="large" variant="bare-inverse" class="slds-modal__close" title="Close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">{label.treatmentModalitiesLabel}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-is-relative" id="modal-content-id-2" style="overflow: initial">
+                    <div if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-m-around_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid">
+                                <div class="slds-col">
+                                    <lightning-record-edit-form object-api-name="Contract_Treatment_Modality__c" record-type-id={recordTypeId} 
+                                    onsubmit={handleNewSubmit} onsuccess={handleNewSuccess} onerror={handleNewError}>
+                                        <!-- Treatment RT fields -->
+                                        <div if:true={showTreatmentForm}>
+                                            <lightning-input-field field-name="Name" required></lightning-input-field>
+                                            <lightning-input-field field-name="Treatment_Type__c" value={CTTreatmentType}></lightning-input-field>
+                                            <lightning-input-field field-name="Sub_Treatment__c" required={isSubTreatmentRequired}></lightning-input-field>
+                                            <lightning-input-field field-name="Installation_Type__c"></lightning-input-field>
+                                            <c-lookup
+                                                errors={errors}
+                                                onsearchforcontractframework={handleProductSearch}
+                                                contract-framework-id={contractFrameworkId}
+                                                onselectionchange={handleProductSelection}
+                                                label="Local Treatment"
+                                                placeholder="Search Local Treatment..."
+                                                is-multi-entry={isMultiEntry}
+                                                required>
+                                            </c-lookup>
+                                        </div>
+
+                                        <!-- Rebate RT fields -->
+
+                                        <div if:true={showRebateForm}>
+                                            <lightning-input-field field-name="Name" required></lightning-input-field>
+                                            <c-lookup
+                                                errors={errors}
+                                                onsearchforcontractframework={handleProductSearch}
+                                                contract-framework-id={contractFrameworkId}
+                                                onselectionchange={handleProductSelection}
+                                                label="Local Rebate"
+                                                placeholder="Search Local Treatment..."
+                                                is-multi-entry={isMultiEntry}
+                                                required>
+                                            </c-lookup>
+                                        </div>
+                                        <lightning-button style="display: none;" variant="brand" label="Save" type="submit"></lightning-button>
+                                    </lightning-record-edit-form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={toggleNewModal} disabled={newModalButtonsDisabled}>{label.cancelLabel}</button>
+                    <button class="slds-button slds-button_brand" onclick={handleNewModalitySave} disabled={newModalButtonsDisabled}>{label.saveLabel}</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</template>

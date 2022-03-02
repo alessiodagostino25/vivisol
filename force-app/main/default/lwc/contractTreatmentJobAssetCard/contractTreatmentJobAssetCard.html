@@ -1,0 +1,127 @@
+<template>
+    <lightning-card>
+        <div class="c-container">
+            <div class="spinner">
+                <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" size="medium">
+                        </lightning-spinner>
+                </template>
+            </div>
+            <lightning-layout>
+                <lightning-layout-item class="slds-col slds-size_1-of-1 slds-p-around_small">
+                    <lightning-record-edit-form object-api-name="Contract_Asset__c"
+                        record-id={contractAssetId} onload={handleOnLoad} onsuccess={handleSuccess} onerror={handleError} onsubmit={handleSubmit}>
+                        <lightning-messages></lightning-messages>
+                        <div class="slds-grid slds-wrap slds-p-around_small">
+                            <div class="slds-size_1-of-1 slds-m-bottom_small">
+                                <div class="slds-col">
+                                    <h1 class="slds-text-heading_small"><strong>{productName}</strong></h1>
+                                </div>
+                                <div class="slds-grid slds-wrap slds-float_right">
+                                    <div class="slds-col">
+                                        <lightning-button label={labels.ManageStatus} title={labels.ManageStatus}
+                                            variant="brand" onclick={openManageStatusModal} disabled={manageStatusDisabled}></lightning-button>
+                                    </div>
+                                    &nbsp;&nbsp;
+                                    <div class="slds-col">
+                                        <lightning-button label={labels.Delete} title={labels.Delete}
+                                            variant="destructive" onclick={openDeleteModal} disabled={frameworkIsActive}></lightning-button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{labels.Details}</p>
+                            </div>
+                            <!-- <lightning-input-field field-name="ProductName__c" disabled></lightning-input-field> -->
+                            <lightning-input-field field-name="Asset__c" type="Lookup(Asset)" disabled></lightning-input-field>
+                            <lightning-input-field field-name="Contract_Treatment__c" type="Lookup(Contract Treatment)" disabled></lightning-input-field>
+                            <lightning-input-field field-name="Status__c" type="Picklist" disabled></lightning-input-field>
+                            <lightning-input-field field-name="StartDate__c"></lightning-input-field>
+                            <lightning-input-field field-name="EndDate__c"></lightning-input-field>
+                            <lightning-input-field field-name="Customer_Device_Name__c"></lightning-input-field>
+                        </div>
+
+                        <div class="slds-grid slds-wrap slds-grid_align-center">
+                            <div class="slds-col">
+                                <lightning-button label="Save" type="submit" variant="brand"></lightning-button>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- Delete modal -->
+
+        <div if:true={showDeleteModal}>
+            <div class="demo-only">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <lightning-button-icon icon-name="utility:close" onclick={closeDeleteModal}
+                                alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                                title="close"></lightning-button-icon>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{labels.DeleteHeader}
+                            </h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                            <div class="slds-align_absolute-center">
+                                <h2>{labels.DeleteMessage}</h2>
+                            </div>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <div class="slds-float_left">
+                                <lightning-button label={labels.Cancel} variant="neutral" onclick={closeDeleteModal}>
+                                </lightning-button>
+                            </div>
+                            <div class="slds-float_right">
+                                <lightning-button label={labels.Delete} variant="destructive" onclick={handleDelete}>
+                                </lightning-button>
+                            </div>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </div>
+
+        <!-- Manage Status Modal -->
+
+        <div if:true={showManageStatusModal}>
+            <div class="demo-only">
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <header class="slds-modal__header">
+                            <lightning-button-icon icon-name="utility:close" onclick={closeManageStatusModal}
+                                alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                                title="close"></lightning-button-icon>
+                            <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">{labels.ManageStatus}
+                            </h2>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2"
+                            style="overflow: initial;">
+                            <lightning-record-edit-form object-api-name="Contract_Asset__c"
+                                record-id={contractAssetId} onsuccess={handleStatusSubmit}>
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>Contract Asset Status</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Status__c" type="Picklist"></lightning-input-field>
+                                </div>
+                                <div class="slds-grid slds-wrap slds-grid_align-center">
+                                    <div class="slds-col">
+                                        <lightning-button label="Save" variant="brand" type="submit"
+                                            class="slds-m-around_medium"></lightning-button>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

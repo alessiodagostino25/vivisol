@@ -1,0 +1,47 @@
+<template>
+    <div class="slds-align_center slds-m-around_small">
+
+        <!-- Record edit form for normal objects -->
+
+        <div if:true={showRecordEditForm}>
+            <lightning-record-edit-form object-api-name={objectApiName} record-id={recordId} onsuccess={handleSuccess} onerror={handleError} onsubmit={handleSubmit}>
+                <div class="slds-m-bottom_x-large">
+                    <div if:false={hideIsCreatedField}>
+                        <label class="slds-checkbox_toggle">
+                            <lightning-input-field variant="label-inline" field-name="IsCreatedSAP__c"></lightning-input-field>
+                        </label>
+                    </div>
+                    <div if:true={showSyncField}>
+                        <div if:false={syncFieldIsCheckbox}>
+                            <lightning-input-field variant="label-inline" field-name="IsSyncSAP__c" type="Picklist"></lightning-input-field>
+                        </div>
+                        <div if:true={syncFieldIsCheckbox}>
+                            <label class="slds-checkbox_toggle">
+                                <lightning-input-field variant="label-inline" field-name="IsSyncSAP__c"></lightning-input-field>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <lightning-button label="Save" variant="brand" type="submit" class="slds-align_absolute-center"></lightning-button>
+            </lightning-record-edit-form>
+        </div>
+
+        <!-- Custom input fields for objects that don't support UIrecordApi (like ProductRequest) -->
+
+        <div if:false={showRecordEditForm}>
+            <div class="slds-m-bottom_x-large">
+                <lightning-combobox
+                    name="IsSync"
+                    label="SAP Sync Status"
+                    variant="label-inline"
+                    value={productRequestSyncValue}
+                    options={syncOptions}
+                    onchange={handleSyncChange}>
+                </lightning-combobox>
+            </div>
+
+            <lightning-button label="Save" variant="brand" class="slds-align_absolute-center" onclick={handleCustomSaveClick}></lightning-button>
+        </div>
+    </div>
+</template>

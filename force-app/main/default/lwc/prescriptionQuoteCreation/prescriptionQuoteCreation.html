@@ -1,0 +1,65 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+            </lightning-button-icon>
+            <div class="slds-modal__header">
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.NewQuoteLabel}</h1>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning-record-edit-form object-api-name="Quote__c" onsubmit={handleFormSubmit}>
+                    <div class="slds-grid slds-wrap slds-var-p-around_medium slds-is-relative">
+                        <div if:true={isLoading}>
+                            <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                        </div>
+        
+                        <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                            <p>{labels.InformationLabel}</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Name" value={quoteName}></lightning-input-field>
+                            <lightning-input-field field-name="Prescription__c" value={recordId}></lightning-input-field>
+                            <lightning-input-field field-name="Account_Bill_To__c" value={quoteBillTo}></lightning-input-field>
+                            <lightning-input-field field-name="Ship_To__c" value={quoteShipTo}></lightning-input-field>
+                            <lightning-input-field field-name="Approval_Period__c" value={quoteApprovalPeriod}></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Contract_Framework__c" value={quoteContractFrameworkId}></lightning-input-field>
+                            <lightning-input-field field-name="Approver__c" value={quoteApproverId}></lightning-input-field>
+                            <lightning-input-field field-name="Account_Sold_To__c" value={quoteAccountSoldTo}></lightning-input-field>
+                            <lightning-input-field field-name="Location__c" value={quoteLocationId}></lightning-input-field>
+                        </div>
+                    </div>
+                    <lightning-button type="submit" style="display: none;"></lightning-button>
+                </lightning-record-edit-form>
+
+                <!-- Datatable -->
+        
+                <div if:true={isTableEmpty} class="slds-align_absolute-center">
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                        <span class="slds-assistive-text">Warning</span>
+                        <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                        </span>
+                        <h2>{labels.NoElementsLabel}
+                        </h2>
+                      </div>
+                    </div>
+                <div if:false={isTableEmpty} class="slds-var-m-vertical_medium slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                    <lightning-datatable
+                        data={tableData}
+                        columns={columns}
+                        key-field="Id"
+                        onrowaction={handleRowAction}
+                        hide-checkbox-column
+                        resize-column-disabled
+                    >
+                    </lightning-datatable>
+                </div>
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={handleSave}>{labels.SaveLabel}</button>
+            </div>
+        </div>
+    </section>
+</template>

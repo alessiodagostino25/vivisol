@@ -1,0 +1,20 @@
+<template>
+    <!-- Spinner -->
+
+    <div if:true={isLoading} class="spinner">
+        <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+    </div>
+
+    <!-- Forced Sync -->
+
+    <div class="slds-text-align_center slds-p-around_small">
+        <lightning-icon icon-name="action:change_record_type" alternative-text="Synchronization" size="large"></lightning-icon>
+    </div>
+    <div class="slds-text-align_center slds-p-around_small">
+        <div class="slds-text-heading_medium">{labels.HelpText}</div>
+    </div>
+
+    <div class="slds-text-align_center slds-p-around_small">
+        <lightning-button variant="brand" label={labels.SyncButton} title="Synchronize with SAP"  onclick={handleClick}></lightning-button>
+    </div>
+</template>

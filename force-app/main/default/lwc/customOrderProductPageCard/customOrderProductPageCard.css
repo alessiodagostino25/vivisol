@@ -1,0 +1,8 @@
+.c-container {
+    border: 2px solid #F3F2F2;
+    margin: 10px 10px 20px 10px;
+}
+.THIS lightning-icon.some-indicator  svg > use {
+    fill:  white;
+    
+}

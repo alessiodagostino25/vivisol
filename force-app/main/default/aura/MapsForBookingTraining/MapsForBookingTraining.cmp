@@ -1,0 +1,27 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" >
+	<!-- attributes -->
+    <aura:attribute name="mapMarkers" type="Object"/>
+    <aura:attribute name="markersTitle" type="String" />
+    <aura:attribute name="selectedMarkerValue" type="String" default="" />
+    <aura:attribute name="ServiceTerritoryList" type="ServiceTerritory[]" />
+    <aura:attribute name="workOrderStreet" type="String" />
+    <aura:attribute name="workOrderCity" type="String" />
+    <aura:attribute name="workOrderCountry" type="String" />
+
+   
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+
+
+    <!--<div>Selected Marker Value is {!v.markersTitle}</div>-->
+    
+
+    <!-- the map component -->
+   <lightning:map 
+        mapMarkers="{! v.mapMarkers }"
+        markersTitle="{!v.markersTitle}"
+        selectedMarkerValue="{!v.selectedMarkerValue}"
+        onmarkerselect="{!c.handleMarkerSelect}" />
+   
+</aura:component>

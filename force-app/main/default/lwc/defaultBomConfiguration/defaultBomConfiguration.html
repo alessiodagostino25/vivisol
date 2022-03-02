@@ -1,0 +1,25 @@
+<template>
+    <!-- Progress bar -->
+    <lightning-progress-indicator current-step={currentStep} type="path" variant="base">
+        <template for:each={steps} for:item="step">
+            <lightning-progress-step label={step.label} value={step.value} key={step.label}></lightning-progress-step>
+        </template>
+    </lightning-progress-indicator>
+
+    <div if:true={showProductSelection}>
+        <c-default-bom-product-selection contract-treatment-job-id={contractTreatmentJobId} contract-treatment-job-name={contractTreatmentJobName}></c-default-bom-product-selection>
+    </div>
+    <div if:true={showProductConfiguration}>
+        <c-default-bom-product-configuration contract-treatment-job-id={contractTreatmentJobId} contract-treatment-job-name={contractTreatmentJobName}></c-default-bom-product-configuration>
+    </div>
+
+    <div class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+        <div class="slds-col slds-p-around_medium">
+            <lightning-button  variant="brand" label={labels.Back} title={labels.Back} onclick={handleBack}></lightning-button>
+        </div>
+        <div class="slds-col slds-p-around_medium">
+            <lightning-button if:true={showProductSelection} variant="brand" label={labels.Next} title={labels.Next} onclick={handleNext}></lightning-button>
+            <lightning-button if:false={showProductSelection} variant="brand" label={labels.Save} title={labels.Save} onclick={handleSave}></lightning-button>
+        </div>
+    </div>
+</template>

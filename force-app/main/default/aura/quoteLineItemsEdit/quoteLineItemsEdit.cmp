@@ -1,0 +1,15 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId,force:hasSObjectName,lightning:isUrlAddressable,force:appHostable" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="quoteStatus" type="String"/>
+    <aura:attribute name="page1" type="Boolean"/>
+    <aura:attribute name="page2" type="Boolean"/>
+    <aura:attribute name="page3" type="Boolean"/>
+    <aura:attribute name="pageReference" type="Object"/>
+    <lightning:workspaceAPI aura:id="workspace"/> 
+    
+    <lightning:card>
+        <c:quoteLineItemFatherPageCmp name="quote_line_item_edit" recordId="{!v.recordId}" quoteStatus="{!v.quoteStatus}" page1="{!v.page1}" page2="{!v.page2}" page3="{!v.page3}" oncloseclicked="{!c.handleFilterChange}"></c:quoteLineItemFatherPageCmp>
+    </lightning:card>
+
+</aura:component>

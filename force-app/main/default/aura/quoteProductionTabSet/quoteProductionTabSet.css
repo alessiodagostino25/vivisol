@@ -1,0 +1,7 @@
+.THIS {
+    font-size: medium;
+    border: 1px solid ;
+    border-radius: 5px;
+    border-color: rgb(221, 219, 218);
+    box-shadow: var(--lwc-cardShadow,0 2px 2px 0 rgba(0, 0, 0, 0.10));
+}

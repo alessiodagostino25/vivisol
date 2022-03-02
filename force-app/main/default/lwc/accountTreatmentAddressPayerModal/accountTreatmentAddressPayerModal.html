@@ -1,0 +1,115 @@
+<!--
+  @description       : 
+  @author            : sampath.v.kanaparthy@pwc.com
+  @group             : 
+  @last modified on  : 03-02-2022
+  @last modified by  : sampath.v.kanaparthy@pwc.com
+-->
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                    size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                </lightning-button-icon>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Address Payer Configuration</h2>
+            </header>
+
+            <div if:false={editMode} class="slds-modal__content slds-p-around_medium slds-is-relative" id="modal-content-id-1">
+                <div if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                </div>
+
+                <lightning-record-edit-form
+                    object-api-name="Account_Treatment_Address_Payer__c" onsuccess={handleSuccess} onerror={handleError} onsubmit={handleSubmit}>
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-messages>
+                        </lightning-messages>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>Information</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field disabled field-name="Account_Treatment__c" type="Lookup(Account Treatment)" value={accountTreatmentId}></lightning-input-field>
+                            <lightning-input-field disabled field-name="Account_Treatment_Address__c"  value={defaultAddress}></lightning-input-field>       
+                            <lightning-input-field field-name="Payment_Method__c" type="Picklist"></lightning-input-field>
+                            <lightning-input-field field-name="Payment_Percentage__c" type="Percent(16, 2)"></lightning-input-field>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <c-lookup
+                                errors={errors}
+                                onsearchforcontractpayer={handleSearch}
+                                account-treatment-id = {accountTreatmentId} 
+                                onselectionchange={handleSelectionChange}
+                                label="Contract Payer"
+                                placeholder="Search Contract Payer..."
+                                is-multi-entry={isMultiEntry}
+                            >
+                            </c-lookup>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_10-of-12"><span></span></div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button
+                                variant="brand"
+                                type="submit"
+                                name="update"
+                                label="Save">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+
+            <!-- Edit Mode -->
+
+            <div if:true={editMode} class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                <lightning-record-edit-form
+                    object-api-name="Account_Treatment_Address__c" record-id={selectedAddressId} onsuccess={handleSuccess} 
+                    onerror={handleError}> <!-- Edit adding record if present to edit Address -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-messages>
+                        </lightning-messages>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>Information</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field disabled field-name="Account_Treatment__c" type="Lookup(Account Treatment)" value={accountTreatmentId}></lightning-input-field>
+                            <lightning-input-field disabled field-name="Account_Treatment_Address__c" type="Master-Detail(Account Treatment Address)" 
+                                value={}></lightning-input-field>
+                            
+                           
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Payment_Method__c" type="Picklist"></lightning-input-field>
+                            <lightning-input-field field-name="Payment_Percentage__c" type="Percent(16, 2)"></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_10-of-12"><span></span></div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button
+                                variant="brand"
+                                type="submit"
+                                name="update"
+                                label="Save">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

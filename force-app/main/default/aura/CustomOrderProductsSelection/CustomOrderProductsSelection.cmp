@@ -1,0 +1,92 @@
+<aura:component controller="CustomOrderProductsSelectionController"
+implements="lightning:isUrlAddressable,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes,forceCommunity:searchInterface">
+
+<aura:attribute name="recordId" type="Id" />
+
+
+<aura:attribute name="searchText" type="String" default=""/>
+<aura:attribute name="listOfAllproducts" type="list"/> 
+<aura:attribute name="PreselectedProducts" type="list"/> 
+<aura:attribute name="doneLoading" type="Boolean" default="false" />
+
+
+<aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+<lightning:navigation aura:id="navService" />
+
+<lightning:card class="slds-text-align_center" title="{!$Label.c.CustomOrderProductsSelection_MainTitle}" >
+   
+         <div class="slds-form slds-p-horizontal--small">
+            <lightning:input type="text"  name="searchKey"  aura:id="searchKey" onchange="{!c.searchKeyChange}" placeholder="Search Products" />
+         <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr class="slds-text-title_caps">
+                    <th style="width:3.25rem;" class="slds-text-align_right">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <label class="slds-checkbox">
+                                    <ui:inputCheckbox />
+                                    <span class="slds-checkbox_faux"></span>
+                                    <span class="slds-form-element__label"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="{!$Label.c.CustomOrderProductsSelection_ProductName}">{!$Label.c.CustomOrderProductsSelection_ProductName}</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="{!$Label.c.CustomOrderProductsSelection_ProductCode}">{!$Label.c.CustomOrderProductsSelection_ProductCode}</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="{!$Label.c.CustomOrderProductsSelection_ProductFamily}">{!$Label.c.CustomOrderProductsSelection_ProductFamily}</div>
+                    </th>
+                    <th scope="col">
+                        <div class="slds-truncate" title="{!$Label.c.CustomOrderProductsSelection_Manufacturer_Part_Number}">{!$Label.c.CustomOrderProductsSelection_Manufacturer_Part_Number}</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <aura:iteration items="{!v.listOfAllproducts}" var="member">
+                    <tr>
+                        <th scope="row" class="slds-text-align_right" style="width:3.25rem;">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <label class="slds-checkbox">
+                                        <ui:inputCheckbox text="{!member.Id}"
+                                        value="{!member.isChecked}"
+                                                          change="{!c.checkboxSelect}"/>
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label text"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </th>
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!member.Product_Name_Translate}">
+                                {!member.Product_Name_Translate}
+                               
+                            </div>
+                        </th> 
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!member.Product_Code}">
+                                {!member.Product_Code}
+                            </div>
+                        </th>
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!member.Product_Family}">
+                                {!member.Product_Family}
+                            </div>
+                        </th>
+                        <th scope="row">
+                            <div class="slds-truncate" title="{!member.Manufacturer_part_number}">
+                                {!member.Manufacturer_part_number}
+                            </div>
+                        </th>
+                    </tr>
+                </aura:iteration>
+            </tbody>
+        </table>
+        <lightning:button  class="slds-float_right"  variant="brand" label="{!$Label.c.CustomOrderProductsSelection_Next}" title="Brand action" onclick="{! c.handleClick }" />
+    </div>
+</lightning:card>
+</aura:component>

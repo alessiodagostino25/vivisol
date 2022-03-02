@@ -1,0 +1,226 @@
+<template>
+	<template if:true={page1}>
+	<div class="slds-grid slds-wrap slds-p-around_medium">
+		<div class="spinner">
+			<template if:true={isLoading}>
+				 <lightning-spinner alternative-text="Loading" size="medium">
+				 </lightning-spinner>
+			</template>
+		</div>
+
+		<div class="c-container">
+			<lightning-record-edit-form object-api-name="Contract_Treatment__c" record-id={contractTreatmentRecordId} onerror={handleError} onsuccess={handleSuccess}
+			onload={handleOnLoad} onsubmit={handleSubmit}>
+				<div class="slds-grid slds-wrap slds-p-around_medium">
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.Info}prova</p>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Name" type="Text(80)"  required value={contractTreatmentName}></lightning-input-field>
+						<lightning-input-field field-name="Contract_Framework__c" disabled value={contractFrameworkId}></lightning-input-field>
+						<!--<lightning-input-field field-name="Type__c" type="Picklist" value={typeValue} required></lightning-input-field>-->
+						<!--<lightning-input-field field-name="RecordTypeId" type="Record Type" disabled value={recordTypeId}></lightning-input-field>-->
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Corporate_Treatment__c" type="Lookup(Corporate Treatment)"  onchange={handleCorpTreatChange} value={corporateTreatmentId} disabled={frameworkIsActive} required ></lightning-input-field>
+						<div if:false={showStandardProductLookup}>
+							<c-lookup
+								errors={errors}
+								onsearchforcontractframework={handleZSRTProductSearch}
+								contract-framework-id={contractFrameworkId}
+								onselectionchange={handleZSRTProductSelection}
+								label="Product"
+								placeholder="Search Products..."
+								is-multi-entry={isMultiEntry}
+								disabled={frameworkIsActive}
+								required
+							>
+							</c-lookup>
+							<lightning-input-field style="display: none;" field-name="Product__c" type="Lookup(Product)"></lightning-input-field>
+						</div>
+						<div if:true={showStandardProductLookup}>
+							<lightning-input-field field-name="Product__c" type="Lookup(Product)" disabled={frameworkIsActive} required></lightning-input-field>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small" style="position: relative;">
+						<p class={detailsClass}>{label.Details}</p>
+						<div if:true={showTreatmentModalitiesButton}>
+							<lightning-button class="slds-align_absolute-center" variant="brand" label={label.TreatmentModalitiesButtonLabel} 
+								onclick={toggleCTTreatmentModalitiesModal}>
+							</lightning-button>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Scheduling_after_end_date__c" type="Checkbox"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Is_Used__c" type="Checkbox"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.TreatmentInfo}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<!-- <lightning-input-field field-name="Business_Line__c" type="Picklist"></lightning-input-field> -->
+						<lightning-combobox 
+							variant="label-inline" 
+							name="businessLine" 
+							label="Business Line" 
+							placeholder="--None--" 
+							options={businessLineOptions} 
+							onchange={handleBusinessLineChange}
+							value={selectedBusinessLine}>
+						</lightning-combobox>
+						<lightning-input-field field-name="Model__c" type="Picklist"></lightning-input-field>
+						<lightning-input-field field-name="First_supply__c"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<!-- <lightning-input-field field-name="Treatment_Type__c" type="Picklist"></lightning-input-field> -->
+						<lightning-combobox 
+							variant="label-inline" 
+							name="treatmentType" 
+							label="Treatment Type" 
+							placeholder="--None--" 
+							options={treatmentTypeOptions} 
+							onchange={handleTreatmentTypeChange}
+							disabled={treatmentTypeDisabled}
+							value={selectedTreatmentType}>
+						</lightning-combobox>
+						<!-- Hidden Treatment_Type__c inputField to let Model__c and Dental_Surgent__c take their dependent picklist options -->
+						<lightning-input-field field-name="Treatment_Type__c" value={selectedTreatmentType} style="display: none;"></lightning-input-field>
+						<lightning-input-field field-name="Dental_surgent__c"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.CustomerInfo}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Customer_Request_Code__c" type="Text(250)" ></lightning-input-field>
+						<lightning-input-field field-name="Customer_Purchase_Order_Number__c" type="Text(250)" ></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Customer_Purchase_Order_Date__c" type="Date"></lightning-input-field>
+						<lightning-input-field field-name="Customer_Treatment_Alias__c" type="Text(250)"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.Threshold}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Threshold_day__c" type="Number(16,2)" ></lightning-input-field>
+						<lightning-input-field field-name="Threshold_AHI__c" type="Number(17,1)" ></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Threshold_hour__c" type="Number(16,2)" ></lightning-input-field>
+						<lightning-input-field field-name="Threshold_Compliance_percentage__c"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.Description}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-1">
+						<lightning-input-field field-name="Description__c" type="Long Text Area(3200)"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1">
+						<lightning-input-field field-name="Alternative_Description__c" type="Long Text Area(3200)"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.Billable}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Billable__c" type="Picklist"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="All_Items_Billable__c" type="Checkbox"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.Billing}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-1">
+						<lightning-input-field field-name="Billing_Rule__c" type="Picklist"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Billing_Period__c" type="Picklist"></lightning-input-field>
+						<lightning-input-field field-name="Time_rule_start_date__c" type="Picklist"></lightning-input-field>
+						<lightning-input-field field-name="Start_day_Included_Excluded__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="Start_month_Included_Excluded__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="Start_day_suspension_Included_Excluded__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="Rounding__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="IS_UPFRONT__c" type="Checkbox"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Billing_Unit__c" type="Picklist"></lightning-input-field>
+						<lightning-input-field field-name="Time_rule_end_date__c" type="Picklist"></lightning-input-field>
+						<lightning-input-field field-name="End_day_Included_Excluded__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="End_month_Included_Excluded__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="End_day_suspension_Included_Excluded__c" type="Checkbox"></lightning-input-field>
+						<lightning-input-field field-name="Rounding_perc__c" type="Picklist"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small" style="position: relative;">
+						<p class={rebateClass}>{label.Rebate}</p>
+						<div if:true={showRebateModalitiesButton}>
+							<lightning-button class="slds-align_absolute-center" variant="brand" label={label.RebatedModalitiesButtonLabel} 
+								onclick={toggleCTRebateModalitiesModal}>
+							</lightning-button>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Electricity_Rebates__c" type="Picklist"></lightning-input-field>
+						<lightning-input-field field-name="Rebate_Rule__c" type="Picklist"></lightning-input-field>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="Calculation_interval_Month_Rebate__c" type="Picklist"></lightning-input-field>
+						<div if:false={showStandardProductLookup}>
+							<c-lookup
+								errors={errors}
+								onsearchforcontractframework={handleZSERProductSearch}
+								contract-framework-id={contractFrameworkId}
+								onselectionchange={handleZSERProductSelection}
+								label="Rebate Product"
+								placeholder="Search Rebate Products..."
+								is-multi-entry={isMultiEntry}
+							>
+							</c-lookup>
+							<!-- <lightning-input-field style="display: none;" field-name="RebateProduct__c" type="Lookup(Product)"></lightning-input-field> -->
+						</div>
+						<div if:true={showStandardProductLookup}>
+							<lightning-input-field field-name="RebateProduct__c" type="Lookup(Product)"></lightning-input-field>
+						</div>
+					</div>
+					<div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+						<p>{label.DefaultFiscalNature}</p>
+					</div>
+					<div class="slds-col slds-size_1-of-2">
+						<lightning-input-field field-name="SplitEvaluation__c" type="Picklist"></lightning-input-field>
+					</div>
+
+					<div class="slds-grid slds-wrap slds-grid_align-center slds-p-around_medium slds-size_1-of-1">
+						<div class="slds-float_right">
+							<lightning-button class="slds-m-top_small slds-m-around_medium" variant="brand" type="submit" label="Save and Next"></lightning-button>
+						</div>
+					</div>
+				</div>
+			</lightning-record-edit-form>
+		</div>
+	</div>
+
+	<!-- CT TREATMENT Modalities Modal -->
+
+	<div if:true={showCTTreatmentModalitiesModal}>
+		<c-contract-treatment-modalities-modal 
+			onclose={toggleCTTreatmentModalitiesModal} 
+			contract-treatment-id={contractTreatmentRecordId} 
+			contract-framework-id={contractFrameworkId}
+			record-type-name="CTM_Treatment">
+		</c-contract-treatment-modalities-modal>
+	</div>
+
+	<!-- CT REBATE Modalities Modal -->
+
+	<div if:true={showCTRebateModalitiesModal}>
+		<c-contract-treatment-modalities-modal 
+			onclose={toggleCTRebateModalitiesModal} 
+			contract-treatment-id={contractTreatmentRecordId} 
+			contract-framework-id={contractFrameworkId}
+			record-type-name="CTM_Rebate">
+		</c-contract-treatment-modalities-modal>
+	</div>
+
+	</template>
+</template>

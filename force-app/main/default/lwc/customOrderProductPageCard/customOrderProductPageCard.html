@@ -1,0 +1,70 @@
+<template>
+	<lightning-card>
+		<div class="c-container">
+			<lightning-layout>
+				<lightning-layout-item class="slds-col slds-size_1-of-1 slds-p-around_small">
+					<div class="slds-grid slds-wrap  slds-p-around_small">
+						<div class="slds-size_1-of-1 slds-m-bottom_small">
+							<div class="slds-col">
+								<h1 class="slds-text-heading_small"><strong>{name}</strong></h1>
+							</div>
+							<div class="slds-col slds-float_right">
+								<lightning-button label={label.deleteButton} variant="destructive"
+									onclick={presseddelete} class="slds-float_right right" disabled={orderSent}>
+								</lightning-button>
+							</div>
+						</div>
+						<div class="slds-col slds-size_1-of-1 slds-page-header  slds-m-bottom_small">
+							<p>{label.Details}</p>
+						</div>
+						<div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12 ">
+							<lightning-input variant="label-inline" label={label.unitofmeasure}
+								value={unitOfMeasure} disabled>
+							</lightning-input>
+							<lightning-input label={label.Description} value={description} variant="label-inline"
+								onchange={changeindescription}>
+							</lightning-input>
+						
+						</div>
+						<div class="slds-col slds-size_2-of-12 slds-show_medium"></div>
+						<div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12 ">
+							<lightning-input type="number" message-when-value-missing={label.QuantityValidation}
+							minlength="1" label={label.Quantity} variant="label-inline" value={quantity}
+							onchange={changeinquantity} >
+							</lightning-input>
+							
+						</div>
+					</div>
+				</lightning-layout-item>
+			</lightning-layout>
+
+		</div>
+	</lightning-card>
+
+	<template if:true={openmodal}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+
+					<lightning-button-icon icon-name="utility:close" onclick={handleCloseDeleteModal} alternative-text="Close"
+					size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+				</lightning-button-icon>
+				
+					<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+						{name}
+					</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					<p>{label.deleteModalMainBody} <b> {name}</b> ?</p>
+				</div>
+				<footer class="slds-modal__footer">
+					<button class="slds-button slds-button_neutral" onclick={closedelete}>Cancel</button>
+					<button class="slds-button slds-button_destructive" onclick={deletetheorderitem}>Delete</button>
+				</footer>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+</template>

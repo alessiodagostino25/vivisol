@@ -1,0 +1,64 @@
+<template>
+    <!--<lightning-progress-indicator current-step="step-1" type="path" variant="base">
+        <template for:each={steps} for:item="step">
+            <lightning-progress-step label={step.label} value={step.value} key={step.label} onclick={handleStepClick}></lightning-progress-step>
+        </template>
+    </lightning-progress-indicator>
+    <br>-->
+    <br>
+    <div class="slds-m-vertical_medium">
+        <h1 class="slds-text-heading_small" >{label.ProductSelectionHeading}</h1>
+        <br>
+        <h1 class="slds-text-heading_small">{label.ProductSelectionParagraph} <strong>{contractTreatmentJobName}</strong>.</h1>
+    </div>
+    <template if:true={viewProductSelection}>
+        <div class="slds-grid slds-wrap slds-p-around_medium">
+            <div class="slds-col slds-size_3-of-12 slds-m-bottom_medium">
+                <lightning-combobox name="productType" label="" value={picklistValue} placeholder={label.ProductSelectionTypePlaceholder}
+                options={options} onchange={handleProductTypeChange}>
+            </lightning-combobox>
+            <!--<p>Selected value is: {value}</p>-->
+            </div>
+            <div class="slds-col slds-size_4-of-12 slds-m-bottom_medium">
+                <span></span>
+            </div>
+            <div class="slds-col slds-size_5-of-12 slds-m-bottom_medium">
+                <div onkeyup={handleKeyUp}>
+                    <lightning-input name="enter-search" label=" " type="search" placeholder={label.ProductSelectionSearchPlaceholder} value={searchValue}
+                    onchange={handleSearchChange} ></lightning-input>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <template if:false={corporateTreatmentJobProducts.data}>
+                    <div class="Holder">
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </div>
+                </template>
+                <template if:true={isTableEmpty}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                        <span class="slds-assistive-text">Warning</span>
+                        <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                        </span>
+                        <h2>{label.NoElements}
+                        </h2>
+                      </div>
+                </template>
+                <template if:true ={corporateTreatmentJobProducts.data} >
+                    <template if:false={isTableEmpty}>
+                        <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                            <lightning-datatable
+                                    key-field="productId"
+                                    data={corporateTreatmentJobProducts.data}
+                                    columns={columns}
+                                    onrowselection={handleRowSelection}
+                                    selected-rows={allSelectedRows}>
+                            </lightning-datatable>
+                        </div>
+                    </template>
+                </template>
+            </div> <br> <br>
+        </div>
+        <!--<c-contract-job-configuration if:true={viewPage3}></c-contract-job-configuration>
+        <c-product-selection if:true={viewProductSelection}></c-product-selection>-->
+    </template>
+</template>

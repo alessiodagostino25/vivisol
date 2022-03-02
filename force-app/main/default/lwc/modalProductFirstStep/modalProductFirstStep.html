@@ -1,0 +1,27 @@
+<template>
+    <template if:true={viewModalFirst}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" size="medium"> </lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Job 1 - Product Configuration</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <p>Do you want to include one or more product family?</p>
+                    </div>
+                    <footer class="slds-modal__footer slds-modal__footer_directional">
+                        <lightning-button variant="neutral" label="Add Families" title="Primary action" onclick={handleClickAddFamilies} ></lightning-button>
+                        <lightning-button variant="brand" label="Skip to Products" title="Primary action" onclick={handleClickSkipProducts} ></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <c-product-configuration if:true={viewPage5}></c-product-configuration>
+    <c-product-selection if:true={viewProductSelection}></c-product-selection>
+    <c-family-selection if:true={viewFamilySelection}></c-family-selection>
+    <c-contract-job-configuration if:true={viewPage3}></c-contract-job-configuration>
+</template>

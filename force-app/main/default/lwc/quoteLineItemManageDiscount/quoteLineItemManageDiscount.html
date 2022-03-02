@@ -1,0 +1,75 @@
+<template>
+    <template if:false={showClearDiscountModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.ManageDiscount}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-is-relative" id="modal-content-id-1" style="overflow: initial;">
+                    <div if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </div>
+
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-p-horizontal_xx-large">
+                            <lightning-record-edit-form record-id={quoteLineItemId} object-api-name="Quote_Line_Item__c" onsubmit={handleSubmit}>
+                                <lightning-input-field field-name="DiscountType__c" onchange={handleDiscountTypeChange}></lightning-input-field>
+                                <div if:true={manualPriceSelected}>
+                                    <lightning-input-field field-name="TotalPrice_excluding_VAT__c" onchange={handleTotalPriceExVATChange}></lightning-input-field>
+                                </div>
+                                <div if:true={discountPercentageSelected}>
+                                    <lightning-input-field field-name="Discount__c" onchange={handlePercentageChange}></lightning-input-field>
+                                </div>
+
+                                <lightning-button style="display: none;" variant="brand" label="Save" type="submit"></lightning-button>
+                            </lightning-record-edit-form>
+                        </div>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div class="slds-float_right">
+                        <lightning-button variant="brand" label={labels.SaveButtonLabel} onclick={handleSaveClick}></lightning-button>
+                    </div>
+                    <div if:true={showClearDiscountButton} class="slds-float_left">
+                        <lightning-button variant="brand" label={labels.ClearDiscount} onclick={handleClearDiscount}></lightning-button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showClearDiscountModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">{labels.ManageDiscount}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-is-relative" id="modal-content-id-2">
+                    <div if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </div>
+                    
+                    <center>
+                        <h2>{labels.ClearDiscountText}</h2>
+                    </center>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div class="slds-float_right">
+                        <lightning-button variant="brand" label={labels.Yes} onclick={handleYesClick}></lightning-button>
+                    </div>
+                    <div if:true={showClearDiscountButton} class="slds-float_left">
+                        <lightning-button variant="brand" label={labels.No} onclick={handleNoClick}></lightning-button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

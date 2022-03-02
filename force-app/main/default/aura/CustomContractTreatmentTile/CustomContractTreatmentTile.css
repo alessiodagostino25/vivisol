@@ -1,0 +1,13 @@
+.THIS {
+}
+
+.THIS .customTileTitle{
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.THIS .customTileLabel{
+    color: rgb(62, 62, 60);
+    font-size: 13px;
+    font-weight: 400; 
+}

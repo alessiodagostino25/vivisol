@@ -1,0 +1,6 @@
+<design:component>
+	<design:attribute name="ServiceAppointmentList" label="ServiceAppointmentList"/>
+	<design:attribute name="vardecisionflow" label="SelectedAppointment"/>
+    
+    
+</design:component>

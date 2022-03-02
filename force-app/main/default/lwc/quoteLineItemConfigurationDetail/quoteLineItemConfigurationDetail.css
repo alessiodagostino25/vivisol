@@ -1,0 +1,14 @@
+.c-container {
+  border: 2px solid #F3F2F2;
+  margin: 10px 0 20px 0;
+}
+
+@media only screen and (max-width: 760px),
+  (min-device-width: 768px) and (max-device-width: 1024px) {
+    .slds-max-small-size_1-of-1{
+      padding:0;
+    } 
+    .slds-small-size_1-of-1{
+      padding:0;
+    }
+}

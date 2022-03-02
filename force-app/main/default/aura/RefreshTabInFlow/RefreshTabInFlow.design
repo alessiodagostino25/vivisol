@@ -1,0 +1,3 @@
+<design:component >
+    <design:attribute name="recordId" label="recordId of the flowscreen"/>
+</design:component>

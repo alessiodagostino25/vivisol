@@ -1,0 +1,12 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable" access="global">
+    <lightning:navigation aura:id="navService" />
+
+    <aura:attribute name="url" type="String" />
+    <aura:attribute name="recordId" type="String" />
+
+    <lightning:tabset>
+        <lightning:tab label="{!$Label.c.createQuoteLineItem_Tab_Process}">
+            <c:CreateQuoteLineItemButton recordId="{!v.recordId}"></c:CreateQuoteLineItemButton>
+        </lightning:tab>
+    </lightning:tabset>
+</aura:component>

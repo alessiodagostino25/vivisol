@@ -1,0 +1,18 @@
+<template>
+    <template if:true={page3}>
+        <!--<c-product-configuration-progress-bar current-step={currentStep}></c-product-configuration-progress-bar>-->
+        <c-prod-selection-limit-config if:true={viewProductSelection} contract-treatment-record-id={contractTreatmentRecordId} view-product-selection={viewProductSelection} contract-treatment-name={contractTreatmentName}></c-prod-selection-limit-config>
+        <c-product-limits-config if:true={viewLimitsConfiguration} view-limits-configuration={viewLimitsConfiguration} selected-products={selectedProducts} contract-treatment-record-id={contractTreatmentRecordId} contract-treatment-name={contractTreatmentName}></c-product-limits-config>
+        <div class ="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+            <div class="slds-col slds-p-around_medium">
+                <lightning-button  variant="brand" label="Back" title="Primary action" onclick={handleBack}></lightning-button>
+            </div>
+            <div if:false={viewLimitsConfiguration} class="slds-col slds-p-around_medium">
+                <lightning-button variant="brand" label="Next" title="Primary action" onclick={handleNext}></lightning-button>
+            </div>
+            <div if:true={viewLimitsConfiguration} class="slds-col slds-p-around_medium">
+                <lightning-button variant="brand" label="Finish" title="Primary action" onclick={handleFinish}></lightning-button>
+            </div>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,112 @@
+<template>
+
+    <div class="slds-m-top_medium slds-m-left_x-large slds-m-right_x-large">
+        <div class="slds-grid slds-wrap slds-size_12-of-12 slds-p-around_small">
+            <div class="slds-col">
+                <lightning-button if:true={showPropagateQuantityButton} label="Propagate" variant="brand" onclick={handledClickShowPropagateQuantity}
+                    class="slds-float_right"></lightning-button>                
+                <lightning-button label={deletechanged} variant="destructive" onclick={handledelete}
+                    class="slds-float_right right" disabled={accounttreatmentstatus}></lightning-button>
+                <lightning-button label={label.ManageStatus} title="Primary action" class="slds-float_right right"
+                    variant="brand" onclick={handleManageStatus} disabled={managestatusdisabled}></lightning-button>
+            </div>
+        </div>
+        <template if:true={openmodal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-04" aria-modal="true"
+                aria-describedby="modal-content-id-4" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closedelete}
+                        alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                        title="close"></lightning-button-icon>
+                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Delete</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                        <p>{label.deleteModalMainBody}</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={closedelete}>Cancel</button>
+                        <button class="slds-button slds-button_destructive" onclick={savedelete}>Delete</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+
+        </template>
+        <lightning-record-form record-id={product.Id} object-api-name="Account_Treatment_Job_Product__c"
+            layout-type="Full" columns="2" mode="view" onsuccess={handleUpdateSuccess}>
+        </lightning-record-form>
+    </div>
+
+    <template if:true={showManageStatusModal}>
+        <div class="demo-only">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open slds-modal_small">
+                <div class="slds-modal__container modalwidth">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closemanagestatus}
+                        alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                        title="close"></lightning-button-icon>
+                        <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">{label.ManageStatus}
+                        </h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium modalOverflow" id="modal-content-id-3">
+
+                        <lightning-record-edit-form record-id={product.Id} 
+                            object-api-name="Account_Treatment_Job_Product__c" onsuccess={handleStatusSuccess} onsubmit={handleStatusSubmit}>
+                            <div class="slds-col slds-size_5-of-12">
+                                <lightning-input-field field-name="Status__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-grid_align-center">
+                                <div class="slds-col">
+                                    <lightning-button label="Save" variant="brand" type="submit"
+                                        class="slds-m-around_medium">
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+
+    <!--Manage propagate quantity Modal-->
+    <template if:true={showPropagateQuantityModal}>
+        <div class="demo-only">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-quantity" aria-modal="true"
+                aria-describedby="modal-content-id-quantity" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closePropagateQuantityModal}
+                            alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                            title="close"></lightning-button-icon>
+                        <h2 id="modal-heading-quantity" class="slds-text-heading_medium slds-hyphenate">
+                            {label.PropagateQuantityHeader}</h2> 
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-quantity"
+                        style="overflow: initial;">
+                        <p>
+                       {label.PropagateQuantityDescription}
+                    </p>
+                    </div>
+
+                    <footer class="slds-modal__footer slds-clearfix">
+                        <div class="slds-float_left">
+                            <lightning-button label="Cancel" variant="neutral"
+                                onclick={closePropagateQuantityModal}></lightning-button>
+                        </div>
+                        <div class="slds-float_right">
+                            <lightning-button label={label.PropagateQuantityButton} variant="brand"
+                                onclick={handledClickPropagateQuantity}></lightning-button>
+                        </div>
+                    </footer>
+
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+
+</template>

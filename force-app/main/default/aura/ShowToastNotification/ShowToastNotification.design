@@ -1,0 +1,4 @@
+<design:component >
+    <design:attribute name="toastType" label="Input Toast Type"/>
+    <design:attribute name="toastMessage" label="Input Toast Message"/>
+</design:component>

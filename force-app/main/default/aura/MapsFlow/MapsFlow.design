@@ -1,0 +1,5 @@
+<design:component>
+	<design:attribute name="Street" label="Street"/>
+    <design:attribute name="City" label="City"/>
+    <design:attribute name="State" label="State"/>
+</design:component>

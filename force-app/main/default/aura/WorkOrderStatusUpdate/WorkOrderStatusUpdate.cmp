@@ -1,0 +1,49 @@
+<aura:component controller="WorkOrderStatusUpdateController" implements = "force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,lightning:actionOverride,lightning:isUrlAddressable">
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <aura:attribute name="options" type="List" default="[]"/>
+    <aura:attribute name="isLoading" type="Boolean" default="true" />
+
+    <article class="slds-card">
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning:tabset>
+                <lightning:tab label="Manage Status">
+                    <!-- SPINNER -->
+                    <div class="spinner">
+                        <aura:if isTrue="{! v.isLoading }">
+                            <lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+                        </aura:if>
+                    </div>
+                    
+                    <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="WorkOrder" onsubmit="{! c.handleSubmit}" onsuccess="{! c.handleSuccess}"
+                    onerror="{! c.handleError}" onload="{! c.handleFormLoad}" aura:id="Form">
+                        <lightning:messages />
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-12"></div>
+                            <div class="slds-col slds-size_10-of-12">
+                                
+                                <lightning:inputField style="display: none;" fieldName="Status" aura:id="Status"/>
+
+                                <div class="slds-form">
+                                    <div class="slds-form-element slds-form-element_horizontal">
+                                        <lightning:combobox name="Status" label="Status" placeholder="Select Status..." 
+                                        options="{! v.options }" onchange="{! c.handleSelectionChange }" aura:id="Combobox"/>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_horizontal">
+                                        <lightning:inputField fieldName="Reason__c" aura:id="Reason" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-12"></div>
+                        </div>
+                    </lightning:recordEditForm>
+                </lightning:tab>
+            </lightning:tabset>
+        </div>
+        <footer class="slds-card__footer">
+            <div class="slds-text-align_center slds-p-around_small">
+                <lightning:button variant="brand" label="Save" title="Save" name="update" type="submit" onclick="{! c.handleSubmitClick}"/>
+            </div>
+        </footer>
+    </article>
+</aura:component>

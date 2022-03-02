@@ -1,0 +1,88 @@
+<template>
+    <lightning-card>
+        <!--<lightning-record-edit-form object-api-name={objectAPIName} record-id={SBUId} onsubmit={handleSubmit} onsuccess={handleSuccess} onerror={handleError}>
+            <template for:each={sbuFieldMap} for:item="sbuField">
+                <div key={sbuField.section}>
+                    <lightning-accordion allow-multiple-sections-open active-section-name="A">
+                        <lightning-accordion-section name="A" label={sbuField.section}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <template for:each={sbuField.column1Fields} for:item="fieldName">
+                                        <lightning-input-field field-name={fieldName}  key={fieldName}></lightning-input-field>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <template for:each={sbuField.column2Fields} for:item="fieldName">
+                                        <lightning-input-field field-name={fieldName}  key={fieldName}></lightning-input-field>
+                                    </template>
+                                </div>
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </div>
+            </template>
+            <lightning-button style="display: none;" type="submit"></lightning-button>
+        </lightning-record-edit-form>-->
+
+        <lightning-record-edit-form object-api-name={objectApiName} record-id={recordId} onsuccess={handleSuccess} onerror={handleError}>
+            <!-- <lightning-messages>
+            </lightning-messages> -->
+            <template for:each={layoutSections} for:item="layoutSection">
+                <div key={layoutSection.label}>
+                    <lightning-accordion allow-multiple-sections-open active-section-name="A">
+                        <lightning-accordion-section name="A" label={layoutSection.label}>
+                            <div class="slds-grid slds-wrap">
+                                <template for:each={layoutSection.layoutColumns} for:item="layoutColumn">
+                                    <div class="slds-col" key={layoutColumn.columnNumber}>
+                                        <template for:each={layoutColumn.layoutItems} for:item="layoutItem">
+                                            <lightning-input-field 
+                                                field-name={layoutItem.field} 
+                                                key={layoutItem.field} 
+                                                disabled={layoutItem.readOnly}
+                                                required={layoutItem.required}>
+                                            </lightning-input-field>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </div>
+            </template>
+            <lightning-button class="slds-align_absolute-center" type="submit" label="Save" variant="brand"></lightning-button>
+        </lightning-record-edit-form>
+
+        <!--<lightning-record-edit-form object-api-name={objectApiName} record-id={recordId}>
+            <template for:each={layoutSections} for:item="layoutSection">
+                <div key={layoutSection.label}>
+                    <div class="slds-section slds-is-open">
+                        <h3 class="slds-section__title">
+                            <button aria-controls={layoutSection.label} aria-expanded={sectionExpanded} class="slds-button slds-section__title-action" onclick={handleSectionClick}>
+                                <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left" aria-hidden="false">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#switch"></use>
+                                </svg>
+                                <span class="slds-truncate" title={layoutSection.label}>{layoutSection.label}</span>
+                            </button>
+                        </h3>
+                        <div aria-hidden="false" class="slds-section__content" id={layoutSection.label}>
+                            <div class="slds-grid slds-wrap">
+                                <template for:each={layoutSection.layoutColumns} for:item="layoutColumn">
+                                    <div class="slds-col" key={layoutColumn.columnNumber}>
+                                        <template for:each={layoutColumn.layoutItems} for:item="layoutItem">
+                                            <lightning-input-field 
+                                                field-name={layoutItem.field} 
+                                                key={layoutItem.field} 
+                                                disabled={layoutItem.readOnly}
+                                                required={layoutItem.required}>
+                                            </lightning-input-field>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </lightning-record-edit-form>-->
+    </lightning-card>
+</template>

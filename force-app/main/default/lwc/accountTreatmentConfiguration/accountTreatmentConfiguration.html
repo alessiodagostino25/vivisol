@@ -1,0 +1,23 @@
+<template>
+
+  
+    <lightning-card>
+        <!-- Spinner while data is loading -->
+        <div class="Holder" if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+
+        <div class="slds-m-top_medium slds-m-left_large slds-m-right_large">
+            <div class="slds-page-header slds-m-bottom_medium">
+                <p>
+                    {label.mainTitle}
+                </p>
+            </div>
+            <template if:true={fields}>
+                <lightning-record-form object-api-name="Account_Treatment__c" record-id={recordid} fields={fields}
+                    columns="2" mode="edit" onsuccess={detectchange} onchange={detectbutton}>
+                </lightning-record-form>
+            </template>
+        </div>
+    </lightning-card>
+</template>

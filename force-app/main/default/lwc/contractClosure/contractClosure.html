@@ -1,0 +1,20 @@
+<template>
+    <template if:true={viewPage6}>
+        <c-contract-treatment-progress-bar current-step="step-4"></c-contract-treatment-progress-bar>
+        <br>
+        <p>Conract Closure!</p>
+        <br>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_11-of-12">
+                <lightning-button variant="brand" label="Back" title="Primary action" onclick={handleClickBack}
+                    class="slds-m-left_medium"></lightning-button>
+            </div>
+            <div class="slds-col slds-size_1-of-12">
+                <lightning-button variant="brand" label="Close &amp; Save" title="Primary action"
+                    class="slds-m-right_none"></lightning-button>
+            </div>
+        </div>
+    </template>
+    <c-product-limits if:true={viewProductLimits} current-step={currentStep}
+        contract-treatment-record-id={contractTreatmentRecordId}></c-product-limits>
+</template>

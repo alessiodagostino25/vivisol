@@ -1,0 +1,104 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                    size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                </lightning-button-icon>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.AssetManagement}</h2>
+            </header>
+
+            <div class="slds-modal__content slds-p-bottom_medium slds-p-horizontal_medium" id="modal-content-id-1">
+
+                <!-- Asset configuration page -->
+
+                <div if:true={showConfigurationPage}>
+                    <div class="slds-grid slds-grid_align-center slds-m-top_medium">
+                        <div class="slds-col">
+                            <lightning-button variant="brand" label={labels.NewContractAssetButtonLabel} title="New Contract Asset"
+                                onclick={handleNewClick}></lightning-button>
+                        </div>
+                    </div>
+
+                    <template for:each={assetsRelatedToCT.data} for:item="contractAsset">
+                        <c-contract-treatment-job-asset-card 
+                            key={contractAsset.Id}
+                            contract-asset-id={contractAsset.Id}
+                            serial-number={contractAsset.serialNumber}
+                            product-name={contractAsset.productName}
+                            ondelete={refreshAll}
+                            framework-is-active={frameworkIsActive}>
+                        </c-contract-treatment-job-asset-card>
+                    </template>
+                </div>
+
+                <!-- Asset selection page -->
+
+                <div if:true={showSelectionPage}>
+                    <div class="slds-text-heading_medium">{labels.AssetSelectionParagraph}</div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-p-around_medium lgc-bg">
+                            <div class="slds-is-relative slds-align_absolute-center">
+                                <div class="spinner">
+                                    <template if:false={allAssets.data}>
+                                        <lightning-spinner alternative-text="Loading" size="medium">
+                                        </lightning-spinner>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div class="slds-is-relative slds-align_absolute-center">
+                                <div class="spinner">
+                                    <template if:true={isLoading}>
+                                        <lightning-spinner alternative-text="Loading" size="medium">
+                                        </lightning-spinner>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <div>
+                                <lightning-input name="enter-search" label=" " type="search" placeholder="Search Asset..." 
+                                    onchange={handleSearchChange} >
+                                </lightning-input>
+                            </div>
+                            <br>
+
+                            <div if:false={isTableEmpty}>
+                                <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                                    <lightning-datatable 
+                                        key-field="Id"
+                                        data={allAssets.data}
+                                        columns={columns}
+                                        selected-rows={selectedIds}>
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                            <div if:true={isTableEmpty}>
+                                <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                                    <span class="slds-assistive-text">Warning</span>
+                                    <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                                    </span>
+                                    <h2>{labels.NoElements}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <div if:true={showConfigurationPage} class="slds-float_left">
+                    <lightning-button label={labels.Back} variant="brand" onclick={handleBack}></lightning-button>
+                </div>
+                <div if:true={showSelectionPage} class="slds-float_right">
+                    <lightning-button label={labels.Save} variant="brand" onclick={handleSave}></lightning-button>
+                </div>
+                <div if:true={showConfigurationPage} class="slds-float_right">
+                    <lightning-button label={labels.Save} variant="brand" onclick={closeModal}></lightning-button>
+                </div>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

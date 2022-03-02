@@ -1,0 +1,67 @@
+<aura:component controller="ContractTreatmentController" implements="lightning:isUrlAddressable">
+    <aura:attribute name="treatmentName" type="String" />
+    <aura:attribute name="contractTreatmentRecordId" type="String" />
+    <aura:attribute name="contractFrameworkId" type="String" />   
+    <aura:attribute name="status" type="String" />
+    <aura:attribute name="billable" type="String" />
+    <aura:attribute name="contractTreatmentExternalId" type="String" />
+    <aura:attribute name="corporateTreatment" type="String" />
+    <aura:attribute name="contractStartDate" type="String" />
+    <aura:attribute name="contractEndDate" type="String" />
+    <aura:attribute name="corporateTreatmentId" type="String" />
+    <aura:attribute name="frameworkStatus" type="String" />
+
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="viewPageReference" type="Object"/>
+    <aura:attribute name="editPageReference" type="Object"/>
+    <aura:attribute name="corporateTreatmentPageReference" type="Object"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:navigation aura:id="navService"/>
+
+    <lightning:tile>
+        <aura:set attribute="media">
+            <lightning:icon iconName="utility:table" />
+        </aura:set>
+        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+            <h3 class="slds-tile__title slds-truncate customTileTitle" title="{!v.treatmentName}">
+                {!v.treatmentName}
+            </h3>
+            <div class="slds-shrink-none">
+                <lightning:buttonMenu aura:id="menu" onselect="{! c.handleSelect }"
+                    alternativeText="Show menu" iconSize="small">
+                    <lightning:menuItem value="View" label="View" />
+                    <lightning:menuItem value="Edit" label="Edit" />
+                </lightning:buttonMenu>
+            </div>
+        </div>
+        <dl class="slds-dl_horizontal">
+            <dt class="slds-dl_horizontal__label"> 
+                <p class="slds-truncate customTileLabel" title="{!$Label.c.ContractTreatmentRelatedList_Active}">{!$Label.c.ContractTreatmentRelatedList_Active}:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Salesforce">{!v.status}</p>
+            </dd>
+            <dt class="slds-dl_horizontal__label customTileLabel">
+                <p class="slds-truncate" title="{!$Label.c.ContractTreatmentRelatedList_Billable}">{!$Label.c.ContractTreatmentRelatedList_Billable}:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="salesforce-ux@salesforce.com">{!v.billable}
+                </p>
+            </dd>
+            <dt class="slds-dl_horizontal__label customTileLabel">
+                <p class="slds-truncate" title="Email">Contract Treatment Id:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="salesforce-ux@salesforce.com">{!v.contractTreatmentExternalId}
+                </p>
+            </dd>
+            <dt class="slds-dl_horizontal__label customTileLabel">
+                <p class="slds-truncate" title="Email">Corporate Treatment:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate customLink" title="salesforce-ux@salesforce.com" onclick="{! c.handleClickCorporateTreatment }">{!v.corporateTreatment}
+                </p>
+            </dd>
+        </dl>
+    </lightning:tile>
+</aura:component>

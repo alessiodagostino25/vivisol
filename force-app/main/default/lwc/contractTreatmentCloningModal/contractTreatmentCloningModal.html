@@ -1,0 +1,47 @@
+<template>
+    <div if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="medium">
+        </lightning-spinner>
+    </div>
+
+    <header class="slds-modal__header">
+        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.CloneButton}</h2>
+    </header>
+
+    <lightning-record-edit-form object-api-name="Contract_Treatment__c"
+        onerror={handleError} onsuccess={handleSuccess} onsubmit={handleSubmit}>
+        <lightning-messages>
+        </lightning-messages>
+        <div class="slds-grid slds-wrap slds-p-around_medium">
+            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                <p>{labels.Info}</p>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-helptext content={labels.Selection}></lightning-helptext>
+                <c-lookup
+                    errors={errors}
+                    onsearchforcontractframework={handleCFSearch}
+                    contract-framework-id={currentContractFrameworkId}
+                    onselectionchange={handleSelectionChange}
+                    label="Contract Framework"
+                    placeholder="Search Contract Framework..."
+                    is-multi-entry={isMultiEntry}
+                    required
+                >
+                </c-lookup>
+            </div>
+            <div class="slds-col slds-size_1-of-1">
+                <lightning-input-field variant="label-inline" field-name="Name" type="Text(80)" required></lightning-input-field>
+            </div>
+        </div>
+        <!-- This is a hidden submit button: REF only fires onsubmit event (to be handled in handleSubmit) if this button submits -->
+        <lightning-button id="submitButton" style="display: none;" variant="brand" type="submit" label={labels.CloneButton}>
+        </lightning-button>
+    </lightning-record-edit-form>
+
+    <!--<footer class="slds-modal__footer">-->
+        <div class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-center">
+            <lightning-button variant="brand" label={labels.CloneButton} onclick={handleCloneClick}></lightning-button>
+        </div>
+    <!--</footer>-->
+</template>

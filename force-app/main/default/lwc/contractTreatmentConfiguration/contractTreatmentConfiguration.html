@@ -1,0 +1,27 @@
+<template>
+	<template if:true={viewContractTreatment}>
+		<div class="slds-grid slds-wrap slds-p-around_small">
+			<div class="slds-col slds-size_1-of-1">
+				<c-contract-treatment-progress-bar></c-contract-treatment-progress-bar>
+			</div>
+		</div>
+		<div class="slds-grid slds-grid_align-spread slds-p-around_medium">
+			<div class="slds-col"></div>
+			<div class="slds-col">
+				<lightning-button variant="brand" label="Next" title="Primary action" onclick={handleClickNext}>
+				</lightning-button>
+			</div>
+		</div>
+		<div class="slds-grid slds-wrap slds-p-around_medium">
+			<div class="slds-col slds-size_1-of-1">
+				<div class="c-container">
+					<lightning-record-form object-api-name={objectApiName} record-id={contractTreatmentRecordId}
+						layout-type="Full" columns="2">
+					</lightning-record-form>
+				</div>
+			</div>
+		</div>
+	</template>
+	<c-contract-job-configuration if:true={viewPage3} current-step={currentStep}
+		contract-treatment-record-id={contractTreatmentRecordId}></c-contract-job-configuration>
+</template>

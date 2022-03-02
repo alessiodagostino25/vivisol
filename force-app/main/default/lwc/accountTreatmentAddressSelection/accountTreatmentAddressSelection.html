@@ -1,0 +1,119 @@
+<!--
+  @description       : 
+  @author            : sampath.v.kanaparthy@pwc.com
+  @group             : 
+  @last modified on  : 03-02-2022
+  @last modified by  : sampath.v.kanaparthy@pwc.com
+-->
+<template>
+ 
+    <br>
+
+    <div class="slds-m-bottom_small slds-m-left_medium">
+        {labels.PageTitle} <b>{accountTreatmentName}</b>
+    </div>
+    
+    <div>
+        <lightning-card>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                
+                <div class="slds-col slds-size_1-of-1">
+                    <!-- Spinner while data is loading -->
+                    <template if:true={loading}> 
+                        <div class="Holder">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <br>
+                    <!-- Message if there are no elements to show -->
+                    <template if:true={isTableEmpty}>
+                        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                            <span class="slds-assistive-text">Warning</span>
+                            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                            </span>
+                            <h2>{labels.NoElements}
+                            </h2>
+                          </div>
+                    </template>
+                    <!-- Datatable -->        
+                    <template if:true ={ATAs.data} >
+                        <template if:false={isTableEmpty}>  
+                            <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                                <lightning-datatable
+                                        key-field="Id"
+                                        data={ATAs.data}  
+                                        columns={columns}
+                                        onrowaction={handleRowAction}
+                                        hide-checkbox-column
+                                        > 
+                                </lightning-datatable>
+                            </div>
+                        </template>
+                    </template>
+                </div> <br> <br>
+            </div>
+        </lightning-card>
+    </div>
+
+    <div class="slds-align_absolute-center">
+        <button class="slds-button slds-button_brand" onclick={handleNewClick}>{labels.New}</button>
+    </div>
+    <br>
+    <br>
+    <br>
+            <!-- address payer --> 
+    <div>
+        <lightning-card>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                
+                <div class="slds-col slds-size_1-of-1">
+                    <!-- Spinner while data is loading -->
+                    <template if:true={loading1}> 
+                        <div class="Holder">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <br>
+                    <!-- Message if there are no elements to show -->
+                    <template if:true={isTableEmpty1}>
+                        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                            <span class="slds-assistive-text">Warning</span>
+                            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                            </span>
+                            <h2>{labels.NoElements}
+                            </h2>
+                          </div>
+                    </template>
+                    <!-- Datatable -->        
+                    <template if:true ={ATAPs.data} >
+                        <template if:false={isTableEmpty1}>  
+                            <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                                <lightning-datatable
+                                        key-field="Id"
+                                        data={ATAPs.data}  
+                                        columns={columns1}
+                                        onrowaction={handleRowAction}
+                                        hide-checkbox-column
+                                        > 
+                                </lightning-datatable>
+                            </div>
+                        </template>
+                    </template>
+                </div> <br> <br>
+            </div>
+        </lightning-card>
+    </div>
+
+    <div class="slds-align_absolute-center">
+        <button class="slds-button slds-button_brand" onclick={handleNewClick1}>{labels.New}</button>
+    </div>
+    <br>
+    <br>
+    <br>
+    
+
+    <!-- Creation/Configuration Modal -->
+    <c-account-treatment-address-modal if:true={showModal} account-treatment-id={accountTreatmentId} account-id={accountId} selected-address-id={addressToConfigureId}
+        onsave={handleModalSave}></c-account-treatment-address-modal>
+     <c-account-treatment-address-payer-modal if:true={showModal1} account-treatment-id={accountTreatmentId} onsave={handleModalSave}></c-account-treatment-address-payer-modal>
+</template>

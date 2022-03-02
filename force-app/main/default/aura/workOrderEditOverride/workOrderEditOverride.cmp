@@ -1,0 +1,3 @@
+<aura:component implements="force:lightningQuickAction,lightning:actionOverride,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global">
+    <c:layoutForm recordId="{!v.recordId}" objectApiName="{!v.sObjectName}" onsuccess="{!c.handleSuccess}"></c:layoutForm>
+</aura:component>

@@ -1,0 +1,57 @@
+<template>
+
+
+
+    <lightning-card title={label.HeaderTitle}>
+        <div class="slds-hide_large">
+
+            <br />
+
+            <div class="slds-hide_large slds-m-bottom_xx-large slds-size_1-of-1">
+                <div if:false={component1} class="slds-col slds-size_3-of-12 slds-float_left">
+                    <lightning-button label={label.backButton} variant="brand" onclick={backMethod}
+                        if:false={component1} class="slds-m-left_medium"></lightning-button>
+                </div>
+
+                <div if:false={component3} class="slds-col slds-size_3-of-12 slds-float_right">
+                    <lightning-button label={label.nextButton} variant="brand" disabled={isdisablednext}
+                        onclick={nextMethod}></lightning-button>
+                </div>
+
+                <div if:true={component3} class="slds-col slds-size_3-of-12  slds-float_right ">
+                    <lightning-button label={label.finishButton} variant="brand" onclick={handleFinishClick}>
+                    </lightning-button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="slds-m-top_large ">
+            <c-custom-order-product-selection if:true={component1} order-id={recordId}
+                onmycheckboxselectednextactivated={handlenextbutton}
+                onmycheckboxselectednextdeactivated={handlenextbuttondeactivation}
+                oncreationfinished={handleFinishedProductsCreation}></c-custom-order-product-selection>
+            <!-- Second Page c-custom-order-product-edit -->
+            <c-custom-order-product-edit if:true={component2} order-id={recordId}></c-custom-order-product-edit>
+            <c-order-item-card-list if:true={component3} order-id={recordId}></c-order-item-card-list>
+        </div>
+        <div class="slds-m-bottom_xx-large slds-p-top_medium">
+            <div if:false={component1} class="slds-col slds-size_1-of-12 slds-float_left">
+                <lightning-button label={label.backButton} variant="brand" onclick={backMethod} if:false={component1}
+                    class="slds-m-left_medium"></lightning-button>
+            </div>
+            <div if:false={component3} class="slds-col slds-size_1-of-12 slds-float_right ">
+                <lightning-button label={label.nextButton} variant="brand" disabled={isdisablednext}
+                    onclick={nextMethod} class=" slds-float_right slds-m-right_medium"></lightning-button>
+            </div>
+            <div if:true={component3}
+                class="slds-col slds-size_3-of-12 slds-medium-size_1-of-12 slds-large-size_1-of-12 slds-float_right">
+                <lightning-button label={label.finishButton} variant="brand" onclick={handleFinishClick}
+                    class="slds-float_right slds-m-right_medium"></lightning-button>
+            </div>
+        </div>
+
+    </lightning-card>
+
+</template>

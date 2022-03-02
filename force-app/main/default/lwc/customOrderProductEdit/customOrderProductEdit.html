@@ -1,0 +1,24 @@
+<template>
+    <div class="slds-size_1-of-1">
+        <lightning-progress-indicator current-step="2" type="path" variant="base">
+            <lightning-progress-step label={label.ProductSelection} value="1"></lightning-progress-step>
+            <lightning-progress-step label={label.QuantityConfiguration} value="2"></lightning-progress-step>
+            <lightning-progress-step label={label.PriceConfiguration} value="3"></lightning-progress-step>
+        </lightning-progress-indicator>
+    </div>
+    <lightning:card class="slds-form slds-p-horizontal--small slds-m-vertical_x-small  ">
+    
+        <div if:true={orderproducts.data}>
+            <template for:each={orderproducts.data} for:item="member">
+                <c-custom-order-product-page-card item-id={member.Id} key={member.Id} name={member.Name}
+                    order-sent={orderSent} quantity={member.Quantity} onorderitemdeleted={handledeleteorderitem} productcode={member.Product_Code}
+                    productunitofmeasure={member.ProductUnitofMeasure} box={member.Box}
+                    description={member.Description}></c-custom-order-product-page-card>
+            </template>
+        </div>
+        <div if:false={orderproducts.data}>
+            <lightning-spinner alternative-text="Loading..." size="large">
+            </lightning-spinner>
+        </div>
+    </lightning:card>
+</template>

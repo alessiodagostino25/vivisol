@@ -1,0 +1,77 @@
+<template>
+    <H1></H1>
+    <template if:true={page2}>
+        <div class="c-container slds-m-vertical_medium">
+            <lightning-card>
+                <lightning-layout>
+                    <lightning-layout-item class="slds-col slds-size_1-of-1 slds-p-around_small">
+                        <lightning-record-edit-form object-api-name="Quote_Line_Item__c" record-id={quoteLineItemId}
+                            onsubmit={handleRecordSubmit}>
+                            <div class="slds-grid slds-wrap slds-p-around_small slds-m-vertical_xx-small">
+                                <div class="slds-m-bottom_medium demo-only demo-only--sizing slds-grid slds-wrap slds-size_1-of-1">
+                                    <div class="slds-size_1-of-2 slds-max-small-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                        <h1 class="slds-text-heading_small"><b>{title}</b></h1>
+                                    </div>
+                                    <div class="slds-size_1-of-2 slds-max-small-size_1-of-1 slds-small-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-2">
+                                        <div class = "slds-float_right slds-m-vertical_xx-small">
+                                            <lightning-button label={label.deleteButton} data-id={quoteLineItemId} title="Delete"
+                                                variant="destructive" disabled={isDisableDelButton} onclick={deleteConfirm}>
+                                            </lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-vertical_small">
+                                    <p>{label.details}</p>
+                                </div>
+                                <div class="slds-size_1-of-1 slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12 ">
+                                        <lightning-input label={unitMeasureLabel}
+                                            value={productMeasure} placeholder="--None--"
+                                            variant="label-inline" disabled>
+                                        </lightning-input>
+                                        <lightning-input-field field-name="Description__c">
+                                        </lightning-input-field>
+                                    </div> 
+                                    <div class="slds-col slds-size_2-of-12 slds-show_medium"></div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12 slds-large-size_5-of-12 ">
+                                    
+                                    
+                                        <lightning-input-field name="test" field-name="Quantity__c"
+                                                        onchange={handleChangeQuantity}
+                                            required={isRequired} variant="label-inline">
+                                        </lightning-input-field>
+                                    </div>
+                                  
+                                    
+                                </div>
+                            </div>
+                            <template if:true={confirmToDelete}>
+                                <div role="dialog" class="slds-modal slds-fade-in-open ">
+                                    <div class="slds-modal__container">
+                                        <header class="slds-modal__header">
+                                            <lightning-button-icon icon-name="utility:close" onclick={closeDeleteModal} alternative-text="Close"
+                                            size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                                        </lightning-button-icon>
+                                            <h1 class="slds-text-heading--medium">{label.confirmation}</h1>
+                                        </header>
+
+                                        <div class="slds-modal__content slds-p-around--medium">
+                                            <center>{label.sureToDelete}&nbsp;<b>{title}</b>&nbsp;?</center>
+                                        </div>
+
+                                        <footer class="slds-modal__footer">
+                                            <button class="slds-button slds-button_neutral" onclick={closeDeleteModal}>Cancel</button>
+                                            <button class="slds-button slds-button_destructive" onclick={deleteMethod}>Delete</button>
+                                        </footer>
+                                    </div>
+                                </div>
+                                <div class="slds-backdrop slds-backdrop--open"></div>
+                            </template>
+                        </lightning-record-edit-form>
+                    </lightning-layout-item>
+                </lightning-layout>
+
+            </lightning-card>
+        </div>
+    </template>
+</template>

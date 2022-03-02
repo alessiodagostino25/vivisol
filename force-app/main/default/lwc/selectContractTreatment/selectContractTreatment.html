@@ -1,0 +1,69 @@
+<template>
+  
+    <lightning-card>
+        <div
+            class="slds-grid slds-grid_vertical slds-gutters_large slds-m-top_medium slds-m-left_medium slds-m-right_medium">
+            <div class="slds-col slds-p-vertical_x-large">
+                <div class="slds-page-header">
+                    <p>
+                        {label.typeOfTreatment}
+                    </p>
+                </div>
+                <lightning-combobox required name="select the type of the treatment" options={recordOptions}
+                    onchange={getSelectedName}></lightning-combobox>
+            </div>
+            
+            <div if:true={therapyisselected} class="slds-col slds-p-vertical_x-large">
+                <div class="slds-page-header">
+                    <p>
+                        {label.selectBusinessline}
+                    </p>
+                </div>
+                <lightning-combobox required name="select the business line" options={businesslines}
+                    onchange={getselectedbusinessline}></lightning-combobox>
+            </div>
+
+            <div if:true={therapyisselected} class="slds-col slds-p-vertical_x-large">
+                <div class="slds-page-header">
+                    <p>
+                        {label.selectTherapy}
+                    </p>
+                </div>
+                <lightning-combobox required name="select the type of the therapy" options={therapyvaluesoptions}
+                    onchange={getselectedtherapy}></lightning-combobox>
+            </div>
+            
+            <div class="slds-col slds-p-vertical_MEDIUM ">
+                <div class="slds-page-header">
+                    <p>
+                        {label.SelectContract}
+                    </p>
+                </div>
+                <lightning-input type="search" onchange={handleKeyChange} class="slds-m-bottom_small" label="Search"
+                    value={searchKey}></lightning-input>
+            </div>
+            <div class="slds-col slds-p-vertical_SMALL">
+                
+                <!-- Spinner while data is loading -->
+                <div class="Holder">
+                    <lightning-spinner if:false={data} alternative-text="Loading" size="medium"></lightning-spinner>
+                </div>
+
+                <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                    <lightning-datatable required key-field="Id" data={data} columns={columns}
+                        onrowselection={handleContractSelection}  max-row-selection="1">
+                    </lightning-datatable>
+                </div>
+            </div>
+            <div class="slds-col slds-p-vertical_x-large">
+                <div class="slds-page-header">
+                    <p>
+                        {label.selectPrescription}
+                    </p>
+                </div>
+                <lightning-combobox name="select a prescription" onchange={handleprescriptionselect}
+                    options={statusOptions}></lightning-combobox>
+            </div>
+        </div>
+    </lightning-card>
+</template>

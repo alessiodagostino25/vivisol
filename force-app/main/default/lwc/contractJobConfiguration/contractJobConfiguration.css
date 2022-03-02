@@ -1,0 +1,17 @@
+.c-container {
+    border: 2px solid #F3F2F2;
+    margin: 10px 0 20px 0;
+}
+
+.exampleHolder{
+    position: relative;
+    display: inline-block;
+    margin-left: 15px;
+    width: 55px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.overflow {
+    overflow: initial;
+}

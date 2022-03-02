@@ -1,0 +1,17 @@
+<aura:component controller="CreateQuoteButtonController" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,lightning:actionOverride">
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+
+    <!-- Specify the pageReference type. Only object is supported. -->
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+
+    <!-- Implement the navigation service. -->
+    <lightning:navigation aura:id="navService"/>
+
+    <!-- pageReferenceUtil component -->
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
+
+    <!-- Button to launch a new order via a standard action. -->
+    <lightning:button label="New Quote" title="Create new Quote" onclick="{! c.handleClick }"/>
+</aura:component>

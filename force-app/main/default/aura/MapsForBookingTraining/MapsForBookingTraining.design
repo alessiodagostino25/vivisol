@@ -1,0 +1,7 @@
+<design:component>
+	<design:attribute name="ServiceTerritoryList" label="ServiceTerritoryList"/>
+    <design:attribute name="selectedMarkerValue" label="selectedTerritory"/>
+    <design:attribute name="workOrderStreet" label="workOrderStreet"/>
+    <design:attribute name="workOrderCity" label="workOrderCity"/>
+    <design:attribute name="workOrderCountry" label="workOrderCountry"/>
+</design:component>

@@ -1,0 +1,65 @@
+<aura:component controller="OrderAndQuoteController" implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,lightning:actionOverride,lightning:isUrlAddressable">
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    
+    <!-- Specify the pageReference type. Only object is supported. -->
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:attribute name="showModal" type="Boolean" default="false" access="private"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <!-- Implement the navigation service. -->
+    <lightning:navigation aura:id="navService"/>
+    
+    <!-- pageReferenceUtil component -->
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
+
+    <article class="slds-card">
+        <lightning:tabset>
+            <lightning:tab label="Work Order">
+                <div class="slds-text-align_center">
+                    <div class="slds-text-heading_small">{!$Label.c.OrderAndQuote_NewWorkOrder}</div>
+                </div>
+                <br/>
+                <div class="slds-text-align_center">
+                    <lightning:button variant="brand" label="{!$Label.c.OrderAndQuote_NewWorkOrderButton}" title="Brand action" onclick="{! c.handleWorkOrderClick }" />
+                </div>
+            </lightning:tab>
+            <lightning:tab label="Quote">
+                <div class="slds-text-align_center">
+                    <div class="slds-text-heading_small">{!$Label.c.OrderAndQuote_NewQuote}</div>
+                </div>
+                <br/>
+                <div class="slds-text-align_center">
+                    <lightning:button variant="brand" label="{!$Label.c.OrderAndQuote_NewQuoteButton}" title="Brand action" onclick="{! c.handleQuoteClick }" />
+                </div>
+            </lightning:tab>
+            <lightning:tab label="Order">
+                <div class="slds-text-align_center">
+                    <div class="slds-text-heading_small">{!$Label.c.OrderAndQuote_NewOrder}</div>
+                </div>
+                <br/>
+                <div class="slds-text-align_center">
+                    <lightning:button variant="brand" label="{!$Label.c.OrderAndQuote_NewOrderButton}" title="Brand action" onclick="{! c.handleOrderClick }" />
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </article>
+
+
+    <aura:if isTrue="{!v.showModal}">
+        <div>
+            <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header slds-modal__header_empty">
+                        <lightning:buttonIcon iconName="utility:close" class="slds-modal__close" onclick="{!c.closeFlowModal}"/>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <c:WorkOrderCreationFlowRedirect caseId="{!v.recordId}" flowFinishEvent="{!c.handleFlowFinishEvent}"></c:WorkOrderCreationFlowRedirect>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div> 
+    </aura:if>
+
+</aura:component>

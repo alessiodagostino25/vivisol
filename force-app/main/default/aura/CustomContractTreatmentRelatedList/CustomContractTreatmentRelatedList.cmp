@@ -1,0 +1,57 @@
+<aura:component controller="ContractTreatmentController"
+    implements="lightning:isUrlAddressable,force:appHostable,force:hasRecordId,flexipage:availableForAllPageTypes">
+    <aura:attribute name="pageReference" type="Object" />
+    <aura:handler name="init" value="{! this }" action="{! c.doInit }" />
+    <lightning:navigation aura:id="navService" />
+    
+    <aura:attribute name="numberOfTreatments" type="String" default="0" />
+
+    <aura:attribute name="relatedPageReference" type="Object"/>
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="contractTreatments" type="List" />
+    <aura:attribute name="doneLoading" type="Boolean" default="false" />
+    <aura:attribute name="emptyList" type="Boolean" default="false" />
+    <aura:attribute name="frameworkStatus" type="String" />
+    <aura:attribute name="hideNewButton" type="Boolean" default="false"/>
+
+    <force:recordData aura:id="forceRecord"
+    recordId="{!v.recordId}"
+    layoutType="FULL"
+    recordUpdated="{!c.recordUpdated}" />
+
+
+    <lightning:card  title="{!format($Label.c.ContractTreatmentRelatedList_MainTitle,v.numberOfTreatments)}"
+        iconName="standard:contract">
+        <aura:set attribute="footer">
+            <span class="view-all-label"
+            onclick="{! c.handleClickViewAll}">{!$Label.c.AccountTreatmentRelatedList_ViewAll}</span>
+        </aura:set>
+        <aura:set attribute="actions">
+            <div class="slds-shrink-none customIconColor">
+                <lightning:buttonMenu aura:id="menu" onselect="{! c.handleClickNewButton }" alternativeText="Show menu"
+                    iconSize="small">
+                    <lightning:menuItem value="New" label="{!$Label.c.ContractTreatmentRelatedList_NewButton}" disabled="{! v.hideNewButton}"/>
+                </lightning:buttonMenu>
+            </div>
+        </aura:set>
+        <aura:if isTrue="{!not(v.doneLoading)}">
+                <div role="status" class="slds-spinner slds-spinner_small">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </aura:if>
+        <div class="slds-form slds-p-horizontal--small">
+            <aura:if isTrue="{!(v.doneLoading)}">
+            <aura:iteration var="treatment" items="{!v.contractTreatments}">
+                <c:CustomContractTreatmentTile treatmentName="{!treatment.name}" contractTreatmentRecordId="{!treatment.id}"
+                contractFrameworkId="{!treatment.contractFrameworkId}" status="{!treatment.status}"
+                billable="{!treatment.billable}" contractTreatmentExternalId="{!treatment.contractTreatmentExternalId}" 
+                corporateTreatment="{!treatment.corporateTreatment}" contractStartDate="{!treatment.contractStartDate}" contractEndDate="{!treatment.contractEndDate}"
+                corporateTreatmentId="{!treatment.corporateTreatmentId}"/>
+            </aura:iteration>
+            </aura:if>
+        </div>
+    </lightning:card>
+</aura:component>

@@ -1,0 +1,21 @@
+.right {
+    margin-right: 20px;
+    width: 130px;
+    height: 32px;
+}
+
+.THIS.color svg {
+    fill: seashell;
+}
+
+.modalheight {
+    height: 250px;
+}
+
+.modalOverflow{
+    overflow: initial;
+}
+
+.modalwidth {
+    width: 640px;
+}

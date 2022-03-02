@@ -1,0 +1,119 @@
+<template>
+    <lightning-card>
+        <div class="c-container">
+            <div class="spinner">
+                <template if:true={isLoading}>
+                     <lightning-spinner alternative-text="Loading" size="medium">
+                     </lightning-spinner>
+                </template>
+            </div>
+            <lightning-layout>
+                <lightning-layout-item class="slds-col slds-size_1-of-1 slds-p-around_small">
+                    <lightning-record-edit-form object-api-name="OrderItem"
+                        record-id={orderItemId} onsuccess={handleSuccess} density="auto">
+                        <lightning-messages>
+                        </lightning-messages>
+                        <div class="slds-grid slds-wrap slds-p-around_small">
+                            <div class="slds-size_1-of-1 slds-m-bottom_small">
+                                <div class="slds-col">
+                                    <h1 class="slds-text-heading_small"><strong>{cardTitle}</strong></h1>
+                                </div>
+                                <div class="slds-grid slds-wrap slds-float_right">
+                                    <div class="slds-col">
+                                        <lightning-button 
+                                            class="slds-m-horizontal_small" variant="brand" label={labels.ManageDiscount} onclick={handleManageDiscountClick} 
+                                            disabled={isButtonDisabled}>
+                                        </lightning-button>
+                                    </div>
+                                    <div class="slds-col">
+                                        <lightning-button class="slds-m-horizontal_small" variant="brand" label={labels.RetrievePrice} onclick={retrySync}></lightning-button>
+                                    </div>
+                                    <div class="slds-col">
+                                        <lightning-button
+                                        class="slds-m-horizontal_small" label='{labels.Delete}' 
+                                        title="Delete" variant="destructive" onclick={handleDeleteClick} disabled={orderSent}>
+                                        </lightning-button>
+                                    </div>
+                                </div>
+                                <!--<div class="slds-col slds-float_right">
+                                    <lightning-button variant="brand" label="Sync" onclick={retrySync}></lightning-button>
+                                    <lightning-button label='{labels.Delete}' title="Delete" variant="destructive" onclick={handleDeleteClick} disabled={orderSent}></lightning-button>
+                                </div>-->
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{labels.Details}</p>
+                            </div>
+                            <div class="slds-col slds-large-size_5-of-12 slds-small-size_1-of-1">
+                                <!--<c-lookup
+                                    errors={errors}
+                                    onsearch={handleSearch}
+                                    onselectionchange={handleSelectionChange}
+                                    label="Asset"
+                                    get-input-value={inputassetvalue}
+                                    placeholder="Search Assets..."
+                                    is-multi-entry={isMultiEntry}>
+                                </c-lookup>-->
+                                <lightning-input-field variant="label-inline" field-name="Asset__c"></lightning-input-field>
+                                <lightning-input-field disabled variant="label-inline" field-name="Description" type="Text(255)"></lightning-input-field> 
+                                <lightning-input-field disabled variant="label-inline" field-name="Discount__c"></lightning-input-field>
+                                <lightning-input-field variant="label-inline" field-name="DiscountType__c" disabled></lightning-input-field>
+                                <lightning-input-field variant="label-inline" field-name="Discount_Description__c" type="Text(255)"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_2-of-12 slds-show_medium"></div>
+                            <div class="slds-col slds-large-size_5-of-12 slds-small-size_1-of-1">
+                                <lightning-input-field disabled variant="label-inline" field-name="Quantity" type="Number(16,2)"></lightning-input-field>
+                                <lightning-input-field disabled variant="label-inline" field-name="VAT__c" type="Percent(16,2)"></lightning-input-field>
+                                <lightning-input-field disabled variant="label-inline" field-name="TotalPrice_Including_VAT__c" type="Currency(16,2)"></lightning-input-field>
+                                <lightning-input-field variant="label-inline" field-name="TotalPrice_excluding_VAT__c" type="Currency(16,2)" disabled></lightning-input-field>
+                                <lightning-input-field  variant="label-inline" field-name="Customer_Product_Code__c" type="Text(100)"></lightning-input-field>
+                            </div>
+                        </div>
+                        <div class="slds-grid slds-grid_align-center">
+                                <lightning-button
+                                    variant="brand"
+                                    type="submit"
+                                    name="update"
+                                    label= {labels.Save}>
+                                </lightning-button>
+                        </div>
+                    </lightning-record-edit-form>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+    <br>
+
+<!-- Delete modal -->
+    <template if:true={showDeleteModal}>
+        <!--<div >-->
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                       
+					<lightning-button-icon icon-name="utility:close" onclick={handleCloseDeleteModal} alternative-text="Close"
+					size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+				</lightning-button-icon>
+                      
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{cardTitle}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <center><h2>Are you sure you want to delete <strong>{cardTitle}</strong>?</h2><br/>
+                        </center>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_neutral" onclick={handleCloseDeleteModal}>Cancel</button>
+                        <button class="slds-button slds-button_destructive" onclick={handleDeleteOrderItem}>Delete</button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--</div>-->
+        </template>
+
+        <template if:true={showManageDiscountModal}>
+            <c-order-item-manage-discount 
+                order-item-id={orderItemId}  
+                onclose={closeManageDiscountModal}>
+            </c-order-item-manage-discount>
+        </template>
+</template>

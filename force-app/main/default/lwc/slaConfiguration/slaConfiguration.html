@@ -1,0 +1,101 @@
+<template>
+    <template if:true={page2a}>
+        <br>
+        <div class="slds-m-vertical_medium">
+            <h1 class="slds-text-heading_small">{label.SlaTitle}: <strong>{contractTreatmentJobName}</strong></h1>
+        </div>
+        <div class="slds-grid slds-grid_align-center slds-m-top_medium">
+            <div class="slds-col"></div>
+            <div class="slds-col">
+                <lightning-button label={label.NewSla} title="Primary action" onclick={handleClickCreateSLA} class="slds-m-around_medium" variant="brand">
+                </lightning-button>
+            </div>
+        </div><br>
+        <template for:each={contractTreatmentSla.data} for:item="Sla">
+            <c-contract-treatment-sla-detail key={Sla.Id} sla-detail={slaDetail} contract-treatment-sla-id={Sla.Id} sla-name={Sla.Name} record-id={recordId} contract-treatment-record-id={contractTreatmentRecordId} 
+                                             contract-treatment-job-id={contractTreatmentJobId} contract-treatment-sla-name={contractTreatmentSlaName} ondeletesla={handleEventDeleteSla} 
+                                             framework-is-active={frameworkIsActive} framework-is-inactive={frameworkIsInactive}>
+            </c-contract-treatment-sla-detail>
+        </template>
+    </template>
+
+    <template if:true={viewCreateSlaModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                            size="large" variant="bare-inverse" class="slds-modal__close" title="Close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">New Contract Treatment Job SLA</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="overflow: initial">
+                    <lightning-record-edit-form object-api-name="Contract_Treatment_Job_SLA__c" onsuccess={handleSuccessModal}>
+                        <lightning-messages>
+                        </lightning-messages>
+                        <div class="slds-grid slds-wrap slds-p-around_small">
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.Info}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name" type="Text(80)" value={contractTreatmentSlaName} required></lightning-input-field>
+                                <lightning-input-field field-name="Urgency_Level__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Contract_Treatment_Job__c" type="Lookup(Contract Treatment Job)" disabled value={contractTreatmentJobId}></lightning-input-field>
+                                <lightning-input-field field-name="IsDefault__c" type="Checkbox"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.WODetails}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Unite_of_measure_Max_Time__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Max_Time__c" type="Number(16,0)"></lightning-input-field>
+                                <lightning-input-field field-name="Calculation_Mode__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.WOOffsetDetails}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Offset_Start_Date__c" type="Number(16,0)"></lightning-input-field>
+                                <lightning-input-field field-name="Offset_unit_of_measure__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Offset_End_Date__c" type="Number(16,0)"></lightning-input-field>
+                                <lightning-input-field field-name="Offset_calculation_mode__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.TaskDetails}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Task_Unite_of_measure_Max_Time__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Task_MaxTime_Execution__c" type="Number(16, 0)"></lightning-input-field>
+                                <lightning-input-field field-name="Task_Calculation_Mode__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.TaskOffsetDetails}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Offset_Start_Date_Task__c" type="Number(16,0)"></lightning-input-field>
+                                <lightning-input-field field-name="Offset_unit_of_measure_Task__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Offset_End_Date_Task__c" type="Number(16,0)"></lightning-input-field>
+                                <lightning-input-field field-name="Offset_calculation_mode_Task__c" type="Picklist"></lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" type="submit" label={label.AddSla} 
+                        onclick={handleSubmitClick}>
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,7 @@
+<aura:component implements="force:lightningQuickAction,lightning:availableForFlowActions">
+    <lightning:navigation aura:id="navService"/>
+    
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="objectPageName" type="String" />
+    <aura:attribute name="appPageName" type="String" />
+</aura:component>

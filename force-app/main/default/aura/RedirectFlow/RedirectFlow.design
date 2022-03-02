@@ -1,0 +1,5 @@
+<design:component>
+   <design:attribute name="recordId" label="Record ID" />
+   <design:attribute name="objectPageName" label="Object Page Name" />
+   <design:attribute name="appPageName" label="App Page Name" />
+</design:component>

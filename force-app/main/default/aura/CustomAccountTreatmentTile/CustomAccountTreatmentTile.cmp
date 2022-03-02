@@ -1,0 +1,62 @@
+<aura:component controller="AccountTreatmentController"  implements="lightning:isUrlAddressable">
+    <aura:attribute name="treatmentName" type="String" />
+    <aura:attribute name="treatmentStatus" type="String" />
+    <aura:attribute name="treatment" type="String" />
+    <aura:attribute name="treatmentType" type="String" />
+    <aura:attribute name="activationDate" type="String" />
+    <aura:attribute name="accountTreatmentId" type="String" />
+    <aura:attribute name="accountId" type="String" />   
+    <aura:attribute type="String" name="contractTreatmentRecordId" />
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="viewPageReference" type="Object"/>
+    <aura:attribute name="editPageReference" type="Object"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:navigation aura:id="navService"/>
+
+    <lightning:tile>
+        <aura:set attribute="media">
+            <lightning:icon iconName="utility:feed" />
+        </aura:set>
+        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+            <a class="slds-truncate" onclick="{!c.handleNameClick}" title="{!v.treatmentName}">
+                {!v.treatmentName}
+            </a>
+            <div class="slds-shrink-none">
+                <lightning:buttonMenu aura:id="menu" onselect="{! c.handleSelect }"
+                    alternativeText="Show menu" iconSize="small">
+                    <lightning:menuItem value="View" label="View" />
+                    <lightning:menuItem value="Edit" label="Edit" />
+                </lightning:buttonMenu>
+            </div>
+        </div>
+        <dl class="slds-dl_horizontal">
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="Status">Status:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Status">{!v.treatmentStatus}</p>
+            </dd>
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="Activation Date">Activation Date:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Activation Date">{!v.activationDate}
+                </p>
+            </dd>
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="Treatment Type">Treatment Type:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Activation Date">{!v.treatmentType}
+                </p>
+            </dd>
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="SubTreatment">Sub-Treatment:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="SubTreatment">{!v.treatment}
+                </p>
+            </dd>
+        </dl>
+    </lightning:tile>
+</aura:component>

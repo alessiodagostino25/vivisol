@@ -1,0 +1,303 @@
+<template>
+    <template if:true={jobDetail}>
+        <lightning-card>
+            <div class="c-container">
+                <div class="spinner">
+                    <template if:true={isLoading}>
+                         <lightning-spinner alternative-text="Loading" size="medium" variant="brand">
+                         </lightning-spinner>
+                    </template>
+                </div>
+                <lightning-layout>
+                    <lightning-layout-item class="slds-col slds-size_1-of-1 slds-p-around_small">
+                        <lightning-record-edit-form object-api-name="Contract_Treatment_Job__c"
+                            record-id={contractTreatmentJobId} onsuccess={handleSuccess} onload={handleOnLoad} onerror={handleError}>
+                            
+                            <div class="slds-grid slds-wrap slds-p-around_small">
+                                <div class="slds-size_1-of-1 slds-m-bottom_small">
+                                    <div class="slds-col">
+                                        <h1 class="slds-text-heading_small"><strong>{jobName}</strong></h1>
+                                    </div>
+                                    <div class="slds-grid slds-wrap slds-float_right">
+                                        <div class="slds-col">
+                                            <lightning-button label={label.ManageStatus} title={label.ManageStatus}
+                                                variant="brand" onclick={handleManageStatus}
+                                                disabled={frameworkIsDraft}></lightning-button>
+                                        </div>
+                                        &nbsp;&nbsp;
+                                        <div class="slds-col">
+                                            <lightning-button label={label.Delete} title={label.Delete}
+                                                variant="destructive" onclick={openDeleteModal}
+                                                disabled={frameworkIsActive}></lightning-button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div if:true={showSLAWarningMessage} class="slds-align_absolute-center slds-m-vertical_medium">
+                                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                                        <span class="slds-assistive-text">Warning</span>
+                                        <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                                            <lightning-icon icon-name="utility:warning" alternative-text="Warning!" variant="warning"
+                                                title="warning variant x-small" size="small">
+                                            </lightning-icon>
+                                        </span>
+                                        <div class="slds-text-body_regular">{label.NoSLAWarning}</div>
+                                    </div>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>{label.Details}</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Name" type="Text(80)" required>
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Contract_Framework__c" type="Text(80)" disabled
+                                        value={contractFrameworkId} required></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12"></div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Contract_Treatment_Job_Code__c"
+                                        type="Lookup(Product)" disabled value={contractTreatmentProductCode} required>
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Contract_Treatment__c"
+                                        type="Lookup(Contract Treatment)" disabled value={contractTreatmentRecordId}
+                                        required></lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>{label.Scheduling}</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Contract_Treatment_Job__c"
+                                        type="Lookup(Contract Treatment Job)">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Scheduling_Rule__c" type="Picklist">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Default_BOM__c" type="Boolean">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Delivery_Channel__c" type="Picklist">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Advance_Expiry_Days__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12"></div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="ComplianceFollowUp__c" type="Checkbox">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="ComplianceSource__c" type="Picklist">
+                                    </lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>{label.Frequency}</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Frequency_Type__c">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Scheduling_Time_Frame__c">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Fixed__c"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12"></div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Frequency__c" type="Number(18,0)">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Frequency_Unit_of_measure__c" type="Picklist">
+                                    </lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>{label.SADependency}</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="SA_Dependency_Job__c" type="Lookup(Contract Treatment Job)">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12"></div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="SADependency__c" type="Picklist">
+                                    </lightning-input-field>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>{label.ActivityDetails}</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Case_Type__c" type="Picklist">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Task__c" type="Picklist"></lightning-input-field>
+                                    <lightning-input-field field-name="Work_Order__c" type="Picklist">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12"></div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Case_Subtype__c" type="Picklist">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Task_Type__c" type="Picklist">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Work_Type__c" type="Lookup(Work Type)">
+                                    </lightning-input-field>
+                                </div>
+                                
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                    <p>{label.OtherDetails}</p>
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Billable__c" type="Checkbox">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Back_Office_Review__c" type="Checkbox">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_2-of-12"></div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input-field field-name="Invoice_Splitting_group__c" type="Picklist">
+                                    </lightning-input-field>
+                                    <lightning-input-field field-name="Customer_Product_Code__c" type="Picklist">
+                                    </lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-grid_align-center">
+                                <div class="slds-col">
+                                    <lightning-button label={label.SlaConfig} title={label.SlaConfig}
+                                        onclick={handleClickViewSLA} class="slds-m-around_medium"></lightning-button>
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-button label={label.ProductConfig} title={label.ProductConfig}
+                                        onclick={handleClickViewProduct} class="slds-m-around_medium">
+                                    </lightning-button>
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-button label={label.UpdateJob} variant="brand" type="submit"
+                                        class="slds-m-around_medium"></lightning-button>
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-button label={label.ConfigureDefaultBOM}
+                                        disabled={hideConfigureDefaultBOMButton} variant="brand"
+                                        class="slds-m-around_medium" onclick={handleConfigureDefaultBOM}>
+                                    </lightning-button>
+                                </div>
+                                <template if:true={showUpdateChildButton}>
+                                    <div class="slds-col">
+                                        <lightning-button label={label.updateChildButton} variant="brand"
+                                            class="slds-m-around_medium" onclick={handleClickShowChildModal}>
+                                        </lightning-button>
+                                    </div>
+                                </template>
+                            </div>
+                        </lightning-record-edit-form>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </lightning-card>
+    </template>
+
+    <template if:true={deleteModal}>
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closeDeleteModal}
+                            alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                            title="close"></lightning-button-icon>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{label.JobDeleteing}
+                        </h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <center>
+                            <h2><b>{label.JobDeleteMsg}</b></h2><br />
+                        </center>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label={label.Cancel} variant="neutral" onclick={closeDeleteModal}>
+                        </lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <lightning-button label={label.Delete} variant="destructive" onclick={handleDeleteJob}>
+                        </lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+
+    <!--Manage Status Modal-->
+    <template if:true={showManageStatusModal}>
+        <div class="demo-only">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closeManageStatusModal}
+                            alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                            title="close"></lightning-button-icon>
+                        <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">{label.ManageStatus}
+                        </h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2"
+                        style="overflow: initial;">
+                        <lightning-record-edit-form object-api-name="Contract_Treatment_Job__c"
+                            record-id={contractTreatmentJobId} onsuccess={handleStatusSubmit}>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>Contract Treatment Job Status</p>
+                            </div>
+                            <div class="slds-col slds-size_5-of-12">
+                                <lightning-input-field field-name="Status__c" type="Picklist"></lightning-input-field>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-grid_align-center">
+                                <div class="slds-col">
+                                    <lightning-button label="Save" variant="brand" type="submit"
+                                        class="slds-m-around_medium"></lightning-button>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+
+    <!--Manage Update Child Modal-->
+    <template if:true={showUpdateChildModal}>
+        <div class="demo-only" style="height: 640px;">
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={handleClickHideChildModal}
+                            alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                            title="close"></lightning-button-icon>
+                        <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">
+                            {label.updateChildModalTitle}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                        <center>
+                            <p>{label.updateChildModalBody}</p>
+                        </center>
+                    </div>
+                    <footer class="slds-modal__footer slds-clearfix">
+                        <div class="slds-grid slds-wrap slds-p-horizontal_small">
+                            <div class="slds-col">
+                                <div class="slds-float_left">
+                                    <lightning-button label={label.Cancel} variant="neutral"
+                                        onclick={handleClickHideChildModal}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                            <div class="slds-col slds-clearfix">
+                                <div class="slds-float_right">
+                                    <lightning-button if:true={showDeliveryButton} label={label.deliveryButton}
+                                        variant="brand" class="slds-m-left_small" onclick={handleClickDeliveryChannel}>
+                                    </lightning-button>
+                                </div>
+                                <lightning-button if:true={showFrequencyButton} label={label.frequencyButton}
+                                    variant="brand" class="slds-m-left_small" onclick={handleClickFrequency}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </div>
+    </template>
+</template>

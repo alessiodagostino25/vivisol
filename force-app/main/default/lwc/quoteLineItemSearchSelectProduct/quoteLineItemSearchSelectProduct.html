@@ -1,0 +1,87 @@
+<template>
+	<template if:true={page1}>
+		<lightning-card class="slds-form slds-p-horizontal--small">
+   
+        	<div class="slds-form slds-p-horizontal--small">
+
+				<div class="spinner">
+					<template if:true={isLoading}>
+							<lightning-spinner alternative-text="Loading" size="medium">
+							</lightning-spinner>
+					</template>
+				</div>
+		
+				<lightning-input title="Search Products" placeholder={label.labelSearchProducts} type="search" onchange={keyCheck} onkeypress={keyCheck} class="slds-m-bottom_small" label="Search"></lightning-input>
+
+				<div if:true={errorMsg} >
+					<p style="color: red;">{errorMsg}</p>
+				</div>
+
+				<span>&nbsp;</span>
+         		<table class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+					<thead>
+						<tr class="slds-text-heading--label slds-text-title--caps">
+							<th  scope="col" class="thead">
+								<div class="slds-text-heading--label slds-text-title--caps" >
+									<lightning-input type="checkbox" onchange={allSelected} ></lightning-input>
+								</div>   
+							</th>
+							<th scope="col" class="thead">
+								<div class="min-header-width slds-cell-wrap " title={label.labelProductName}>{label.labelProductName}</div>
+							</th>
+							<th scope="col" class="thead">
+								<div class="min-header-width slds-cell-wrap " title={label.labelProductCode}>{label.labelProductCode}</div>
+							</th>
+							<th scope="col" class="thead">
+								<div class="min-header-width slds-cell-wrap " title={label.labelProductFamily}>{label.labelProductFamily}</div>
+							</th>
+							<th scope="col" class="thead">
+								<div class="min-header-width slds-cell-wrap " title={label.labelManufacturerpartnumber}>{label.labelManufacturerpartnumber}</div>
+							</th>			
+						</tr>
+					</thead>
+				
+					<tbody>
+						<template for:each={searchData} for:item="PricebookEntry">
+							<tr key={PricebookEntry.Id} class="slds-hint-parent">
+								<td>
+									<div class="slds-form-element">
+										<div class="slds-form-element__control">
+											<label class="slds-checkbox">
+												<lightning-input type="checkbox" value={PricebookEntry.Id} data-id={PricebookEntry.Id} data-pricebook2id={PricebookEntry.Pricebook2Id} data-product2id={PricebookEntry.Product2Id}  onchange={handleChange}></lightning-input>
+											</label>
+										</div>
+									</div>
+								</td>
+								<td data-label={label.labelProductName} >
+									<div  class="slds-cell-wrap" title={PricebookEntry.Product2.Product_Name_Translate__c}>
+										{PricebookEntry.Product2.Product_Name_Translate__c}&nbsp;
+									</div>
+								</td> 
+								<td data-label={label.labelProductCode} >
+									<div class="slds-cell-wrap" title={PricebookEntry.Product2.Product_Code__c}>
+										{PricebookEntry.Product2.Product_Code__c}&nbsp;
+									</div>
+								</td>
+								<td data-label={label.labelProductFamily} >
+									<div class="slds-cell-wrap" title={PricebookEntry.Product2.Product_Family__r.Product_Name_Translate__c}>
+										{PricebookEntry.Product2.Product_Family__r.Product_Name_Translate__c}&nbsp;
+									</div>
+								</td>
+								<td data-label={label.labelManufacturerpartnumber}>
+									<div class="slds-cell-wrap" title={PricebookEntry.Product2.Manufacturer_part_number__c}>
+										{PricebookEntry.Product2.Manufacturer_part_number__c}&nbsp;
+									</div>
+								</td>
+							</tr>
+						</template>
+					</tbody>
+				</table>
+			</div>
+		</lightning-card>
+
+		<div class="slds-float_right slds-m-around_small">
+			<lightning-button label={label.labelNextButton} variant="brand" disabled={isButtonDisabled} onclick={nextStep}></lightning-button>
+		</div>
+	</template>
+</template>

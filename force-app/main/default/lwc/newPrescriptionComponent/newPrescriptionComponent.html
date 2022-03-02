@@ -1,0 +1,168 @@
+<template>
+    <!--S:SIDEA V4AT-182-->
+    <div class="slds-grid slds-wrap slds-p-around_medium backgroundCard" style="background: transparent;">
+		<div class="spinner">
+			<template if:true={isLoading}>
+				 <lightning-spinner alternative-text="Loading" size="medium">
+				 </lightning-spinner>
+			</template>
+		</div>
+
+        <!--PAGE 1--> 
+        <template if:true={isPage1}>
+            <lightning-card class="slds-size_2-of-2">
+                <div class="c-container">
+                    <lightning-record-edit-form object-api-name="Prescription__c" onerror={handleError} onsuccess={handleSuccess}
+                    onload={handleOnLoad} onsubmit={nextPage}>
+                        <div class="slds-grid slds-wrap slds-p-around_medium">
+                            <div class="slds-col slds-size_2-of-2 slds-page-header slds-m-bottom_small sectionPageHeader">
+                                <p>SELECT THE RECORD TYPE</p>
+                            </div>
+                            <div class="slds-col slds-size_2-of-2 slds-p-around_medium">
+                                <lightning-combobox
+                                    name="recordTypeList"
+                                    label="Record Type"
+                                    value=""
+                                    placeholder="Select an Option"
+                                    options={optionsRecordType}
+                                    onchange={handleChangeRecordType}
+                                    required
+                                ></lightning-combobox>
+                            </div>
+                        </div>
+
+                        <!--SHOW THE REST OF PAGE 1-->
+                        <template if:true={isRecordTypeSelected}>
+                            <div class="slds-grid slds-wrap slds-p-around_medium">
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small sectionPageHeader">
+                                    <p>PR_SECTION1</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Patient__c" value={recId} type="Text(80)" required variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Sales_Organization__c" value={salesOrganizationId} type="Text(80)" required variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Address__c" value={location} required variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <template if:false={healthInsuranceNotNull}>
+                                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                        <lightning-input-field field-name="Customer_B2B_and_B2C_Paying_Customer__c" required variant="label-stacked"></lightning-input-field>
+                                    </div>
+                                </template>
+                                <template if:true={healthInsuranceNotNull}>
+                                    <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                        <lightning-input-field field-name="Customer_B2B_and_B2C_Paying_Customer__c" value={healthInsurance} required variant="label-stacked"></lightning-input-field>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Prescriber__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Hospital__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Contract_Framework__c" required variant="label-stacked"></lightning-input-field>
+                                </div>
+                            </div>
+                            <div class="slds-grid slds-wrap slds-p-around_medium">
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small sectionPageHeader">
+                                    <p>PR_SECTION2</p>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Prescription_Date__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Received_date__c" value={dateNow} required variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Consignment_Installation__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Required_Information__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Responsible__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-p-around_medium">
+                                    <lightning-input-field field-name="Notes__c" variant="label-stacked"></lightning-input-field>
+                                </div>
+                            </div>
+                            
+                            <div class="slds-grid slds-wrap slds-grid_align-center slds-p-around_medium slds-size_1-of-1">
+                                <div class="slds-float_right">
+                                    <lightning-button class="slds-m-top_small slds-m-around_medium" label="Cancel" onclick={goBackToPrescription}></lightning-button>
+                                </div>
+                                <div class="slds-float_right">
+                                    <lightning-button class="slds-m-top_small slds-m-around_medium" variant="brand" label="Next" type="submit"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </lightning-record-edit-form>
+                </div>
+            </lightning-card>
+        </template>
+        <!--PAGE 1--> 
+
+        <!--PAGE 2--> 
+        <template if:false={isPage1}>
+            <lightning-card>
+                <div if:true={isLoaded} class="spinner">
+                    <lightning-spinner alternative-text="Loading" size="medium">
+                    </lightning-spinner>
+                </div>
+                <div class="slds-grid slds-wrap slds-p-around_medium" style="background: transparent;">
+                    <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small sectionPageHeader">
+                        <p>TREATMENT CONFIGURATION</p>
+                    </div>
+                    <div class="slds-col slds-size_2-of-2 slds-p-around_medium">
+                        <lightning-combobox
+                            name="businessLineList"
+                            label="Business Line"
+                            value=""
+                            placeholder="Select an Option"
+                            options={businessLineOptions}
+                            onchange={handleChangeBusinessLine}
+                            required
+                        ></lightning-combobox>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap slds-p-around_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small sectionPageHeader">
+                        <p>Payer / Bill To / Approver Selection</p>
+                    </div>
+                    <div class="slds-col slds-size_2-of-2 slds-p-around_medium">
+                        <lightning-datatable
+                            key-field="Id"
+                            data={tableData}
+                            onrowselection={handleRowSelection}
+                            columns={columns}
+                            max-row-selection=1>
+                        </lightning-datatable>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small sectionPageHeader">
+                        <p>SELECT THE CONTRACT TREATMENT</p>
+                    </div>
+                    <div class="slds-col slds-size_2-of-2 slds-p-around_medium">
+                        <lightning-datatable
+                            key-field="Id"
+                            data={tableDataTreatment}
+                            onrowselection={handleRowSelectionTreatment}
+                            columns={columnsTreatment}>
+                        </lightning-datatable>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap slds-grid_align-center slds-p-around_medium slds-size_1-of-1">
+                    <div class="slds-float_right">
+                        <lightning-button class="slds-m-top_small slds-m-around_medium" label="Back" onclick={goBackToEditForm}></lightning-button>
+                    </div>
+                    <div class="slds-float_right">
+                        <lightning-button class="slds-m-top_small slds-m-around_medium" variant="brand" label="Save" onclick={handleFinalSave}></lightning-button>
+                    </div>
+                </div>
+            </lightning-card>
+        </template>
+    </div>
+    <!--E:SIDEA V4AT-182-->
+</template>

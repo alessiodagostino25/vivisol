@@ -1,0 +1,64 @@
+<aura:component controller="ProductRequestService"  implements="lightning:isUrlAddressable">
+    <aura:attribute name="productRequestNumber" type="Integer" />
+    <aura:attribute name="outboundDeliveryNumber" type="Integer" />
+    <aura:attribute name="sourceLocationId" type="String" />
+    <aura:attribute name="sourceLocationName" type="String" />
+    <aura:attribute name="destinationLocationId" type="String" />
+    <aura:attribute name="destinationLocationName" type="String" />
+    <aura:attribute name="needByDate" type="DateTime" />
+    <aura:attribute name="productRequestId" type="String" />  
+    <aura:attribute name="viewPageReference" type="Object"/>
+    
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:navigation aura:id="navService"/>
+
+    <lightning:tile>
+        <aura:set attribute="media">
+            <lightning:icon iconName="utility:replace" />
+        </aura:set>
+        <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+            <a class="slds-truncate" onclick="{!c.handleNameClick}" title="{!v.productRequestNumber}">
+                {!v.productRequestNumber}
+            </a>
+
+            <!-- Actions hidden for now, since there could be only "View" and you can view the record by clicking on its name already -->
+
+            <!--<div class="slds-shrink-none">
+                <lightning:buttonMenu aura:id="menu" onselect="{! c.handleSelect }"
+                    alternativeText="Show menu" iconSize="small">
+                    <lightning:menuItem value="View" label="View" />
+                </lightning:buttonMenu>
+            </div>-->
+            
+        </div>
+        <dl class="slds-dl_horizontal">
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="OutboundDeliveryNumber">Outbound Delivery Number:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="OutboundDeliveryNumber">{!v.outboundDeliveryNumber}</p>
+            </dd>
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="Need By Date">Need by Date:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Need By Date">{!v.needByDate}
+                </p>
+            </dd>
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="Destination Location">Destination Location:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Destination Location">{!v.destinationLocationName}
+                </p>
+            </dd>
+            <dt class="slds-dl_horizontal__label">
+                <p class="slds-truncate" title="Source Location">Source Location:</p>
+            </dt>
+            <dd class="slds-dl_horizontal__detail slds-tile__meta">
+                <p class="slds-truncate" title="Source Location">{!v.sourceLocationName}
+                </p>
+            </dd>
+        </dl>
+    </lightning:tile>
+</aura:component>

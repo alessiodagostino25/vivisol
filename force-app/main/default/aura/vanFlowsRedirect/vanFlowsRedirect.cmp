@@ -1,0 +1,54 @@
+<aura:component controller="VanFlowsRedirectController" implements="flexipage:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable" access="global">
+
+    <aura:attribute name="userId" type="String"></aura:attribute>
+    <aura:attribute name="showModal" type="Boolean"></aura:attribute>
+    <aura:attribute name="pageReference" type="Object" />
+    <aura:attribute name="modalTitle" type="String" />
+    
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <lightning:navigation aura:id="navService"/>
+
+    <lightning:card>
+        <lightning:tabset>
+            <lightning:tab label="VAN Operations">
+                <div class="slds-text-align_center slds-p-around_small">
+                    <button class="slds-button slds-button_brand slds-button_stretch" title="{!$Label.c.ScanPickingList}" 
+                            onclick="{!c.handleScanPickingListClick}">{!$Label.c.ScanPickingList}
+                    </button>
+                </div>
+                <div class="slds-text-align_center slds-p-around_small">
+                    <button class="slds-button slds-button_brand slds-button_stretch" title="{!$Label.c.StartVanUnloading}" 
+                            onclick="{!c.handleVanUnloadingClick}">{!$Label.c.StartVanUnloading}
+                    </button>
+                </div>
+                <div class="slds-text-align_center slds-p-around_small">
+                    <button class="slds-button slds-button_brand slds-button_stretch" title="{!$Label.c.StartExtraLoading}"
+                            onclick="{!c.handleExtraLoadingClick}">{!$Label.c.StartExtraLoading}
+                    </button>
+                </div>
+                <div class="slds-text-align_center slds-p-around_small">
+                    <button class="slds-button slds-button_brand slds-button_stretch" title="{!$Label.c.StartDestroyHU}"
+                            onclick="{!c.handleDestroyHUClick}">{!$Label.c.StartDestroyHU}
+                    </button>
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </lightning:card>
+
+    <aura:if isTrue="{!v.showModal}">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <lightning:buttonIcon iconName="utility:close" onclick="{!c.closeModal}" alternativeText="Close"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                </lightning:buttonIcon>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{!v.modalTitle}</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <lightning:flow aura:id="flowData" onstatuschange="{!c.handleStatusChange}"/>
+            </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </aura:if>
+</aura:component>

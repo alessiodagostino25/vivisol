@@ -1,0 +1,53 @@
+<template>
+    <br>
+    <div class="slds-m-vertical_medium">
+        <h1 class="slds-text-heading_small" >{labels.DefaultBOMSelectionHeading}</h1>
+        <br>
+        <h1 class="slds-text-heading_small">{labels.DefaultBOMSelectionParagraph} <strong>{contractTreatmentJobName}</strong>.</h1>
+    </div>
+    <div class="c-container">
+        <lightning-card>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                <!-- Search bar -->
+                <div class="slds-col slds-size_5-of-12 slds-m-bottom_medium">
+                    <div onkeyup={handleKeyUp}>
+                        <lightning-input name="enter-search" label=" " type="search" placeholder="Search Product..." value={searchValue}
+                        onchange={handleSearchChange} ></lightning-input>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-1">
+                    <!-- Spinner while data is loading -->
+                    <template if:false={pricebookEntries}> 
+                        <div class="Holder">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <!-- Message if there are no elements to show -->
+                    <template if:true={isTableEmpty}>
+                        <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                            <span class="slds-assistive-text">Warning</span>
+                            <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                            </span>
+                            <h2>{labels.NoElements}
+                            </h2>
+                          </div>
+                    </template>
+                    <!-- Datatable -->        <!-- REUSE pricebookEntries.data HERE AND ABOVE IF NECESSARY-->
+                    <template if:true ={pricebookEntries} >
+                        <template if:false={isTableEmpty}>  
+                            <div class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+                                <lightning-datatable
+                                        key-field="Id"
+                                        data={pricebookEntries}  
+                                        columns={columns}
+                                        onrowselection={handleRowSelection}
+                                        > 
+                                </lightning-datatable>
+                            </div>
+                        </template>
+                    </template>
+                </div> <br> <br>
+            </div>
+        </lightning-card>
+    </div>
+</template>

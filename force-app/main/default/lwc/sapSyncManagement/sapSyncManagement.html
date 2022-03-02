@@ -1,0 +1,25 @@
+<template>
+    <lightning-card>
+        <lightning-tabset>
+            <lightning-tab if:true={showSAPSyncStatusTab} label={labels.SAPSyncStatus}>
+                <c-record-sync-status record-id={recordId} object-api-name={objectApiName}></c-record-sync-status>
+            </lightning-tab>
+
+            <lightning-tab if:true={showPortalStatusTab} label={labels.PortalStatusTab}>
+                <c-portal-sync-management record-id={recordId} object-api-name={objectApiName}></c-portal-sync-management>
+            </lightning-tab>
+
+            <lightning-tab label={labels.SAPLogsTab}>
+                <c-sap-callout-loggers record-id={recordId} object-api-name={objectApiName}></c-sap-callout-loggers>
+            </lightning-tab>
+
+            <lightning-tab if:true={showSAPForcedSync} label={labels.SAPForcedSync}>
+                <c-sap-forced-sync record-id={recordId} object-api-name={objectApiName}></c-sap-forced-sync>
+            </lightning-tab>
+
+            <lightning-tab if:true={showSAPSyncFieldsManagement} label={labels.SAPFields}>
+                <c-sap-sync-fields-management record-id={recordId} object-api-name={objectApiName}></c-sap-sync-fields-management>
+            </lightning-tab>
+        </lightning-tabset>
+    </lightning-card>    
+</template>

@@ -1,0 +1,61 @@
+<template>
+    <template if:true={viewManageStatusModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
+            aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeManageStatusModal}
+                        alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+                        title="close"></lightning-button-icon>
+                    <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">
+                        {label.ManageStatus}</h2>
+                </header>
+                <div class="slds-modal__content slds-var-p-around_medium" id="modal-content-id-3"
+                    style="overflow: initial;">
+                    <template if:true={step1}>
+                        <lightning-record-edit-form object-api-name="Contract_Treatment_Job_Product__c"
+                            record-id={selectedProductId} onsuccess={handleStatusSuccess} onload={handleLoadForm} onsubmit={handleStatusSubmit}>
+                            <div class="slds-grid slds-wrap slds-p-around_small">
+                                <div class="slds-col slds-size_1-of-1 slds-page-header slds-var-m-bottom_small">
+                                    <p>Product Status</p>
+                                </div>
+                                <div class="slds-col">
+                                    <lightning-input-field onchange={handleInputChange} field-name="Status__c" type="Picklist" variant="label-inline">
+                                    </lightning-input-field>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-m-top_large">
+                                    <div class="slds-float_right">
+                                        <lightning-button label="Save" variant="brand" type="submit"></lightning-button>
+                                    </div>
+                                    <div class="slds-float_left" if:true={showSubstituteButton}>
+                                        <lightning-button label="Substitute Product" variant="brand" onclick={switchStepButton}></lightning-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-record-edit-form>
+                    </template>
+
+                    <template if:true={step2}>
+                        <c-lookup errors={errors} onsearchforaccount={handleSearch} account-id={contractTreatmentJob} 
+                            onselectionchange={handleSelectionChange} label="Products" placeholder="Search Products..."
+                            is-multi-entry={isMultiEntry} required >
+                        </c-lookup>
+                        <div class="slds-col slds-clearfix slds-var-m-top_large">
+                            <div class="slds-float_left">
+                                <lightning-button label="Back" variant="neutral" onclick={switchStepButton}
+                                    class="slds-var-m-around_medium">
+                                </lightning-button>
+                            </div>
+                            <div class="slds-float_right">
+                                <lightning-button label="Substitute" variant="brand" class="slds-var-m-around_medium"
+                                onclick={handleSubstituteProductSubmit}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

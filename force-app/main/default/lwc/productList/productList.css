@@ -1,0 +1,10 @@
+.job-tile {
+    border: 1px solid	#F3F2F2;
+    border-radius: .20rem;
+    display: block;
+}
+.backgroundInverse {
+    position: relative;
+    background-color: #16325c;
+    height: 80px;
+}

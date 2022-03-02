@@ -1,0 +1,21 @@
+<aura:component controller="ContractTreatmentEditController" implements="flexipage:availableForAllPageTypes,lightning:actionOverride,force:hasRecordId,force:hasSObjectName,lightning:isUrlAddressable" access="global">
+
+    <aura:attribute type="String" name="recordId" />
+    <aura:attribute type="String" name="objectName" />
+    <aura:attribute type="String" name="contractFrameworkId" />
+    <aura:attribute type="String" name="mode" />
+    <aura:attribute type="String" name="corporateTreatmentId" />
+    <aura:attribute type="String" name="status" />
+    <aura:attribute type="Boolean" name="paramsOk" default="false" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+    <aura:renderIf isTrue="{!v.paramsOk}">
+        <lightning:card>
+            <c:globalFatherPageCmp contractFrameworkId="{!v.contractFrameworkId}" name="contract_edit" contractTreatmentRecordId="{!v.recordId}" 
+                                corporateTreatmentId="{!v.corporateTreatmentId}" status="{!v.status}" mode="edit">
+            </c:globalFatherPageCmp>
+        </lightning:card>
+    </aura:renderIf>
+
+</aura:component>

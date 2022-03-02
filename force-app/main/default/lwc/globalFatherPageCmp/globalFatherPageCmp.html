@@ -1,0 +1,43 @@
+<template>
+    <div class="slds-grid slds-wrap slds-m-around_small">
+        <div if:false={showDefaultBOMConfiguration} class="slds-col slds-size_1-of-1">
+            <c-contract-treatment-progress-bar current-step={currentStep}></c-contract-treatment-progress-bar>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-contract-creation-page page1={page1} contract-framework-id={contractFrameworkId} contract-treatment-record-id={contractTreatmentRecordId} oncreated={handleCreated} oncontractcreated={handleContractCreated}
+                                      corporate-treatment-id={corporateTreatmentId} framework-is-active={frameworkIsActive} sales-org-code={salesOrgCode}>
+            </c-contract-creation-page>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-contract-job-configuration page2={page2} page2a={page2a} page2b={page2b} contract-framework-id={contractFrameworkId} contract-treatment-record-id={contractTreatmentRecordId} contract-treatment-job-id={contractTreatmentJobId} 
+                                          contract-treatment-sla-id={contractTreatmentSlaId} onentrysla={handleEntrySLA} onentryproduct={handleEntryProduct} onbacktojobs={handleBackToJobs} corporate-treatment-id={corporateTreatmentId}
+                                          framework-is-active={frameworkIsActive} framework-is-inactive={frameworkIsInactive} 
+                                          ondefaultbomconfiguration={handleDefaultBOMConfiguration} show-asset-button={showAssetButton}>
+            </c-contract-job-configuration>
+        </div>
+        <div class="slds-col slds-size_1-of-1">
+            <c-product-limits if:true={page3} page3={page3} contract-treatment-record-id={contractTreatmentRecordId} onexitlimits={handleExitLimits} 
+                              contract-treatment-name={contractTreatmentName}>
+            </c-product-limits>
+        </div>
+        <!-- Default BOM configuration mini-wizard -->
+        <div if:true={showDefaultBOMConfiguration} class="slds-col slds-size_1-of-1">
+            <c-default-bom-configuration contract-treatment-job-id={jobIdForBOMConfiguration} onexitbomconfiguration={handleExitBOMConfiguration}></c-default-bom-configuration>
+        </div>
+       
+        <div if:false={page1} class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+            <div if:false={page2b} class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+                <div if:false={page3} class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+                    <div if:false={showDefaultBOMConfiguration} class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread">
+                        <div class="slds-col slds-p-around_medium">
+                            <lightning-button  variant="brand" label="Back" title="Primary action" onclick={back}></lightning-button>
+                        </div>
+                        <div if:false={page2a} class="slds-col slds-p-around_medium">
+                            <lightning-button variant="brand" label="Next" title="Primary action" onclick={next}></lightning-button>
+                        </div>
+                    </div>   
+                </div>    
+            </div>
+        </div>
+    </div>
+</template>

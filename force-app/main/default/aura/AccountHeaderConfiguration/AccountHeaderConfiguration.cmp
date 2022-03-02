@@ -1,0 +1,24 @@
+<aura:component implements="lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes">
+    <aura:attribute type="String" name="accountRecordId" />
+    <aura:attribute type="String" name="accountTreatmentRecordId" />
+    <aura:attribute type="String" name="contractTreatmentRecordId" />
+    <aura:attribute type="String" name="objectName" />
+    <aura:attribute type="String" name="mode" />
+    <lightning:workspaceAPI aura:id="workspace" />
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <br></br>
+    <lightning:card title="{!$Label.c.AT_MainTitle}">
+        <br></br>
+        <aura:if isTrue="{!v.mode == 'create' }">
+            <c:accountTreatmentMainComponent recordId="{!v.accountRecordId}" accountRecordId="{!v.accountRecordId}"
+                executionMode="{!v.mode}"></c:accountTreatmentMainComponent>
+        </aura:if>
+        <aura:if isTrue="{!v.mode == 'edit' }">
+            <c:accountTreatmentMainComponent recordId="{!v.accountRecordId}" accountRecordId="{!v.accountRecordId}"
+                executionMode="{!v.mode}" accountTreatmentRecordId="{!v.accountTreatmentRecordId}"
+                contractTreatmentRecordId="{!v.contractTreatmentRecordId}"></c:accountTreatmentMainComponent>
+        </aura:if>
+        <br></br>
+    </lightning:card>
+</aura:component>

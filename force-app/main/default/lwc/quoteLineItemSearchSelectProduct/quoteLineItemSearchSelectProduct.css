@@ -1,0 +1,161 @@
+.c-container {
+    margin: 10px 0 20px 0;
+}
+
+
+.tableScroll {
+	
+    overflow: auto;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    height: 50vh;
+}
+
+.nextButton {
+    position: absolute; right: 20px;
+}
+
+table th {
+    position: -webkit-sticky; 
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    font-size: small;
+	background-color: rgb(216, 214, 214);
+}
+
+
+td, th {
+    
+    border: none;
+    border-bottom: 1px solid rgb(224, 221, 221);
+    position: relative;
+    padding-left: 10px;
+    padding-bottom: 2px;
+    padding-top: 3px;
+}
+
+/*
+	Max width before this PARTICULAR table gets nasty. This query will take effect for any screen smaller than 760px and also iPads specifically.
+	*/
+	@media
+	  only screen 
+    and (max-width: 760px), (min-device-width: 768px) 
+    and (max-device-width: 1024px)  {
+
+
+		.tableScroll {
+			/*overflow: auto;
+			overflow-y: auto;*/
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+		}
+/*
+		.touch {
+			overflow-y: scroll;
+			
+			-webkit-overflow-scrolling: touch;
+		  }*/
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr {
+		display: block;
+		font-size: small;
+	}
+
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr {
+		position: absolute;
+		top: -9999px;
+	/*	left: -9999px;*/
+	}
+
+    tr {
+      margin: 0 0 1rem 0;
+    }
+      
+    tr:nth-child(odd) {
+  /*    background: #ccc;*/
+	}
+	
+	.ths {
+		text-align: left;
+		padding-top: 5px;
+	}
+
+	.nextButton {
+		position: absolute; right: 20px;
+	}
+    
+    
+	
+	td {
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid rgb(126, 125, 125);
+		position: relative;
+		padding-left: 50%;
+	}
+
+	td:before {
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 1px;
+		left: 1px;
+		text-align: left;
+		width: 45%;
+		padding-right: 10px;
+		font-weight: normal;
+		
+	/*	white-space: nowrap;*/
+	}
+
+	.tds {
+		text-align: right;
+		padding-top: 7px;
+		padding-bottom: 7px;
+		font-size: 12px;
+		margin-top: 3px;
+		font-weight: bold;
+      /*  border: 1px solid rgb(37, 37, 37);*/
+
+	}
+	.tdlabel{
+		margin-top: 12px;
+	}
+	.tdsCheck{
+		border-top-color: rgb(95, 94, 94);
+		border-top-style: solid;
+		border-top-width: 1px;
+		text-align: right;
+		padding-right: 3px;
+		padding-top: 12px;
+		padding-bottom: 12px;
+	}
+
+	.thManuf{
+		height: 60px;
+		border-bottom: 3px rgb(95, 94, 94);
+	}
+
+
+	.tableScroll {
+		overflow: auto;
+		overflow-y: auto;
+		
+	}
+		/*
+		Label the data
+    You could also use a data-* attribute and content for this. That way "bloats" the HTML, this way means you need to keep HTML and CSS in sync. Lea Verou has a clever way to handle with text-shadow.
+        */
+        td:nth-of-type(1):before { content: " "; }
+		td:nth-of-type(2):before { content: "PRODUCT NAME"; }
+		td:nth-of-type(3):before { content: "PRODUCT CODE"; }
+		td:nth-of-type(4):before { content: "PRODUCT FAMILY"; }
+		td:nth-of-type(5):before { content: "MANUFACTURES PART NUMBER"; }
+
+		
+		
+	}

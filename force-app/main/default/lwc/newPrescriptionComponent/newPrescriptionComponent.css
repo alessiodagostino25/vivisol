@@ -1,0 +1,13 @@
+.sectionPageHeader {
+    border-bottom: none;
+    box-shadow: none;
+    border: none; 
+}
+
+.backgroundCard {
+    background: white;
+}
+
+.slds-template__container {
+    background: lightgray;
+}

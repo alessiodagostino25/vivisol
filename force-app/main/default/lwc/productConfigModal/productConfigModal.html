@@ -1,0 +1,90 @@
+<template>
+   
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Delete"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{label.ModalHeader}
+                    </h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-record-edit-form object-api-name="Contract_Treatment_Job_Product__c"
+                        record-id={selectedProductId} onsuccess={handleSuccess} onerror={handleError}>
+                        <div class="slds-col slds-size_1-of-1">
+                            <lightning-messages>
+                            </lightning-messages>
+                        </div>
+                        <div class="slds-grid slds-wrap slds-p-around_small">
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.InformationSection}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name" type="Text(80)" value={productName}>
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Billable__c" type="Checkbox"></lightning-input-field>
+                                <lightning-input-field field-name="Line_Number__c" type="Text(250)">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field disabled field-name="Product__c" type="Lookup(Product)">
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Invoice_Splitting_criterion__c" type="Picklist">
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Invoice_Splitting_group__c" type="Text(1)">
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Questionnaire__c" type="Lookup(Questionnaire__c)">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.CustomerCodesLabel}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Purchase_order_number__c" type="Text(250)">
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Customer_Request_Code__c" type="Text(250)">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Purchase_order_date__c" type="Date">
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Customer_Treatment_Alias__c" type="Text(250)">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.QuantityLabel}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Min_Quantity__c" type="Number(18,0)">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Max_Quantity__c" type="	Number(18, 0)">
+                                </lightning-input-field>
+                                <lightning-input-field field-name="Quantity__c" type="	Number(18, 0)">
+                                </lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>{label.LocationLabel}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Plant__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Storage_Location__c"></lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" type="submit" name="update" label={label.SaveButton} onclick={handleSubmitClick}>
+                    </lightning-button>
+                </footer>
+            </div>
+            </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

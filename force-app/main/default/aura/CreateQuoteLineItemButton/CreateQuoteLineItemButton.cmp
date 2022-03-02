@@ -1,0 +1,24 @@
+<aura:component controller="QuoteLineItemController" description="quoteLineItemFatherPageCmp"
+    implements="flexipage:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable" access="global">
+
+    <!-- Implement the navigation service. -->
+    <lightning:navigation aura:id="navService" />
+
+    <aura:attribute name="url" type="String" />
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="quoteStatus" type="String" />
+    <aura:attribute name="subTabId" type="String" />
+    <aura:attribute name="pageReference" type="Object" />
+
+    
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+    <br></br>
+    <h1 class="label">{!$Label.c.createQuoteLineItem_Label_Process}</h1>
+    <br></br>
+    <!-- Button to launch a new quote line item via a standard action. -->
+    <div class="button">
+        <lightning:button label="{!$Label.c.createQuoteLineItem_Button}" title="Create new Quote Line Items"
+            onclick="{!c.handleClick}" variant="brand" />
+    </div>
+</aura:component>

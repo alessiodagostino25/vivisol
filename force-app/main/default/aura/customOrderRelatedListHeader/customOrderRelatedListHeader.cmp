@@ -1,0 +1,22 @@
+<aura:component implements="lightning:isUrlAddressable,force:hasRecordId,force:appHostable,flexipage:availableForAllPageTypes">
+    <aura:attribute name="recordId" type="Id" />
+    <aura:attribute name="pageReference" type="Object" />
+    <aura:attribute name="relatedPageReference" type="Object" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+    <lightning:card title="{!$Label.c.CustomorderRelatedList_Title}" iconName="standard:contract">
+        <aura:set attribute="footer">
+            <span class="view-all-label"
+                onclick="{! c.handleClickViewAll}">{!$Label.c.AccountTreatmentRelatedList_ViewAll}</span>
+        </aura:set>
+        <aura:set attribute="actions">
+            <div class="slds-shrink-none customIconColor">
+                <lightning:button  label="Add Products" title="Add Products" onclick="{! c.handleClickaddproduct }" />
+                <lightning:button  label="Edit Products" title="Edit Products" onclick="{! c.handleClickeditproduct }" />
+            </div>
+        </aura:set>
+            <c:customOrderRelatedList orderId="{!v.recordId}"></c:customOrderRelatedList>
+    </lightning:card>
+
+</aura:component>

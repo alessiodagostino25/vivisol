@@ -1,0 +1,79 @@
+<template>
+    <div class="slds-size_1-of-1 ">
+    <lightning-progress-indicator current-step="1" type="path" variant="base">
+        <lightning-progress-step label={label.ProductSelection} value="1"></lightning-progress-step>
+        <lightning-progress-step label={label.QuantityConfiguration}  value="2"></lightning-progress-step>
+        <lightning-progress-step label={label.PriceConfiguration}  value="3"></lightning-progress-step>
+    </lightning-progress-indicator>
+    </div>
+
+    <div class="spinner">
+        <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="medium">
+                </lightning-spinner>
+        </template>
+    </div>
+
+    <div class="slds-form slds-p-horizontal--small">
+        <lightning-input type="search" onchange={handleKeyChange} class="slds-m-bottom_small" placeholder="Search Product..."></lightning-input>
+        <table  class="slds-table slds-table_bordered slds-table_striped slds-border_left slds-border_right">
+            <thead>
+                <tr class="slds-text-heading--label slds-text-title--caps">
+                    <th  scope="col" class="thead">
+                        <div class="slds-text-heading--label slds-text-title--caps" >
+                                    <lightning-input type="checkbox" onchange={allSelected} name="input1"></lightning-input>  
+                        </div>   
+                    </th>
+                    <th scope="col" class="thead">
+                        <div class="min-header-width slds-cell-wrap " title={label.ProductName}>{label.ProductName}</div>
+                    </th>
+                    <th scope="col" class="thead">
+                        <div class="min-header-width slds-cell-wrap " title={label.ProductCode}>{label.ProductCode}</div>
+                    </th>
+                    <th scope="col" class="thead">
+                        <div class="min-header-width slds-cell-wrap " title={label.ProductFamily}>{label.ProductFamily}</div>
+                    </th>
+                    <th scope="col" class="thead">
+                        <div class="min-header-width slds-cell-wrap " title={label.Manufacturerpartnumber}>{label.Manufacturerpartnumber}</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template  for:each={orderproducts.data} for:item="member">
+                    <tr key={member.Id} class="slds-hint-parent">
+                        <td  >
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <label class="slds-checkbox">
+                                        <lightning-input type="checkbox" data-id={member.Id} onchange={checkboxisselected}  value={member.Product2Id}  ></lightning-input>
+                                    </label>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-label={label.ProductName} >
+                            <div  class="slds-cell-wrap" title={member.Product_Name_Translate}>
+                                {member.Product_Name_Translate}
+                            </div>
+                        </td> 
+                        <td data-label={label.ProductCode} >
+                            <div class="slds-cell-wrap" title={member.Product_Code}>
+                                {member.Product_Code}
+                            </div>
+                        </td>
+                        <td data-label={label.ProductFamily} >
+                            <div class="slds-cell-wrap" title={member.Product_Family}>
+                                {member.Product_Family}
+                            </div>
+                        </td>
+                        <td data-label={label.Manufacturerpartnumber}>
+                            <div class="slds-cell-wrap" title={member.Manufacturer_part_number}>
+                                {member.Manufacturer_part_number}
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+    
+</template>

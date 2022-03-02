@@ -1,0 +1,13 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,force:hasRecordId,lightning:actionOverride,force:lightningQuickActionWithoutHeader">
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+
+    <aura:html tag="style">
+        .slds-modal__container {
+            min-width: 60vw;
+            min-height: 50vw;
+        }
+    </aura:html> 
+
+    <c:prescriptionQuoteCreation recordId="{!v.recordId}" onclosemodal="{!c.closeModal}"></c:prescriptionQuoteCreation>
+</aura:component>

@@ -1,0 +1,182 @@
+<template>
+	<lightning-card>
+		<div class="spinner">
+			<template if:true={isLoading}>
+				<lightning-spinner alternative-text="Loading" size="medium">
+				</lightning-spinner>
+			</template>
+		</div>
+		<div class="c-container">
+			<div class="slds-grid slds-wrap slds-size_12-of-12 slds-p-around_small">
+				<div class="slds-col">
+					<h1 class="slds-text-heading_small"><strong>{job.Name}</strong></h1>
+				</div>
+				<div class="slds-col">
+					<lightning-button label={deletechanged} variant="destructive" onclick={handledelete}
+						class="slds-float_right" disabled={accounttreatmentstatus}>
+					</lightning-button>
+					<lightning-button label={label.ManageStatus} class="slds-float_right slds-m-horizontal_medium" variant="brand"
+						onclick={handleManageStatus} disabled={managestatusdisabled}>
+					</lightning-button>
+					<lightning-button label={label.ScheduleActivitiesButtonLabel} class="slds-float_right" variant="brand"
+						onclick={handleScheduleActivities} disabled={isScheduleActivitiesDisabled}>
+					</lightning-button>
+				</div>
+			</div>
+			<div class="slds-p-horizontal_x-small">
+				<lightning-record-form record-id={job.Id} object-api-name="Account_Treatment_Job__c" layout-type="Full"
+					columns="2" onsuccess={handlesuccess} onload={handleOnLoad}>
+				</lightning-record-form>
+			</div>
+			
+			<template if:true={openmodal}>
+				<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+					aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+					<div class="slds-modal__container">
+						<header class="slds-modal__header">
+							<lightning-button-icon icon-name="utility:close" onclick={closedelete}
+							alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+							title="close"></lightning-button-icon>
+							<h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+								{label.deleteModalMainTitle}
+							</h2>
+						</header>
+						<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+							<p>{label.deleteModalMainBody}</p>
+						</div>
+						<footer class="slds-modal__footer">
+							<lightning-button label={label.cancel} variant="neutral" class="slds-m-left_small"
+								onclick={closedelete}>
+							</lightning-button>
+							<lightning-button label={label.deleteButton} variant="destructive" class="slds-m-left_small"
+								onclick={saveMethod}>
+							</lightning-button>
+						</footer>
+					</div>
+				</section>
+				<div class="slds-backdrop slds-backdrop_open"></div>
+			</template>
+
+			<template if:true={openmodal1}>
+				<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+					aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+					<div class="slds-modal__container">
+						<header class="slds-modal__header">
+							<lightning-button-icon icon-name="utility:close" onclick={closedisplayproduct}
+							alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+							title="close"></lightning-button-icon>
+							<h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Selected Products</h2>
+						</header>
+						<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+							<c-product-list jobname={job.Name} accounttreatmentstatus={accounttreatmentstatus}
+								selectedjobid={job.Id}></c-product-list>
+						</div>
+						<footer class="slds-modal__footer">
+							<center>
+								<button class="slds-button slds-button_neutral"
+									onclick={closedisplayproduct}>Close</button>
+							</center>
+						</footer>
+					</div>
+				</section>
+				<div class="slds-backdrop slds-backdrop_open"></div>
+			</template>
+			<div if:false={productselection} class="slds-align_absolute-center slds-m-bottom_large slds-m-top_small ">
+				<c-account-treatment-product-selection jobid={job.Id} accounttreatmentstatus={accounttreatmentstatus}
+					jobname={job.Name} onviewproductchange={handleviewproductchange}
+					selectedrecordtype={selectedrecordtype}>
+				</c-account-treatment-product-selection>
+
+				<lightning-button disabled={selectedproductview} label={label.viewProductsButton} variant="brand"
+					onclick={displayproduct}>
+				</lightning-button>
+				<lightning-button if:true={showUpdateChildButton} label={label.updateChildButton} variant="brand" class="slds-m-around_medium"
+					onclick={handleClickShowChildModal}>
+				</lightning-button>
+			</div>
+		</div>
+	</lightning-card>
+
+	<!--Manage Update Child Modal-->
+	<template if:true={showUpdateChildModal}>
+		<div class="demo-only" style="height: 640px;">
+			<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-04" aria-modal="true"
+				aria-describedby="modal-content-id-4" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container">
+					<header class="slds-modal__header">
+						<lightning-button-icon icon-name="utility:close" onclick={handleClickHideChildModal}
+							alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+							title="close"></lightning-button-icon>
+						<h2 id="modal-heading-04" class="slds-text-heading_medium slds-hyphenate">
+							{label.updateChildModalTitle}</h2>
+					</header>
+					<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+						<center>
+							<p>{label.updateChildModalBody}</p>
+						</center>
+					</div>
+					<footer class="slds-modal__footer slds-clearfix">
+						<div class="slds-grid slds-wrap slds-p-horizontal_small">
+							<div class="slds-col">
+								<div class="slds-float_left">
+									<lightning-button label={label.cancel} variant="neutral"
+										onclick={handleClickHideChildModal}>
+									</lightning-button>
+								</div>
+							</div>
+							<div class="slds-col slds-clearfix">
+								<div class="slds-float_right">
+									<lightning-button if:true={showDeliveryButton} label={label.deliveryButton}
+										variant="brand" class="slds-m-left_small" onclick={handleClickDeliveryChannel}>
+									</lightning-button>
+								</div>
+								<lightning-button if:true={showFrequencyButton} label={label.frequencyButton}
+									variant="brand" class="slds-m-left_small" onclick={handleClickFrequency}>
+								</lightning-button>
+							</div>
+						</div>
+					</footer>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</div>
+	</template>
+
+	<template if:true={showManageStatusModal}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-3" class="slds-modal  slds-fade-in-open ">
+			<div class="slds-modal__container">
+				<header class="slds-modal__header">
+					<lightning-button-icon icon-name="utility:close" onclick={closemanagestatus}
+						alternative-text="Close" size="large" variant="bare-inverse" class="slds-modal__close"
+						title="close"></lightning-button-icon>
+					<h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">{label.ManageStatus}</h2>
+				</header>
+				<div class="slds-modal__content slds-p-around_medium modalOverflow" id="modal-content-id-3">
+				
+					<lightning-record-edit-form record-id={job.Id} object-api-name="Account_Treatment_Job__c"
+						onsuccess={handleStatusSubmit}>
+						<div class="slds-col slds-size_5-of-12 ">
+							<lightning-input-field field-name="Status__c" type="Picklist"></lightning-input-field>
+						</div>
+						<div class="slds-grid slds-wrap slds-grid_align-center">
+							<div class="slds-col">
+								<lightning-button label="Save" variant="brand" type="submit"
+									class="slds-m-around_medium"></lightning-button>
+							</div>
+						</div>
+					</lightning-record-edit-form>
+				</div>
+			</div>
+		</section>
+		<div class="slds-backdrop slds-backdrop_open"></div>
+	</template>
+
+	<template if:true={showScheduleActivitiesModal}>
+		<c-atj-schedule-activities-modal 
+			account-treatment-job-id={job.Id} 
+			onclose={closeScheduleActivitiesModal} 
+			onactivitiesscheduled={handleActivitiesScheduled}>
+		</c-atj-schedule-activities-modal>
+	</template>
+</template>

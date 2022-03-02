@@ -1,0 +1,46 @@
+<template>
+    <lightning-card>
+        <div if:true={isLoading} class="spinner">
+            <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+        </div>
+
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+              <div class="slds-media__figure">
+                  <lightning-icon icon-name="standard:document" alternative-text="Document" title="Document"></lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                    <span>{labels.HeaderTitle}</span>
+                </h2>
+              </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-12"></div>
+                <div class="slds-col slds-size_8-of-12">
+                    <lightning-record-edit-form object-api-name="Payroll_Header__c">
+                        <lightning-input-field field-name="Month__c" onchange={handleMonthChange} required></lightning-input-field>
+                        <lightning-input-field field-name="Year__c" onchange={handleYearChange} required></lightning-input-field>
+                        <lightning-input-field field-name="Company__c" onchange={handleCompanyIdChange} required></lightning-input-field>
+                    </lightning-record-edit-form>
+                    <div class="slds-align_absolute-center">
+                        <lightning-file-upload
+                            label={labels.FileUploadLabel}
+                            name="fileUploader"
+                            accept={acceptedFormats}
+                            onuploadfinished={handleUploadFinished}>
+                        </lightning-file-upload>
+                    </div>
+                    <div class="slds-align_absolute-center">
+                        <div class="slds-p-top_large slds-p-bottom_small">
+                            <lightning-button variant="brand" label={labels.ButtonLabel} onclick={handleConvertClick} disabled={isButtonDisabled}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12"></div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

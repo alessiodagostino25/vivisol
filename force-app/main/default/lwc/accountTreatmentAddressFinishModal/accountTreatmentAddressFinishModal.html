@@ -1,0 +1,73 @@
+<template>
+    <div class="demo-only" style="height: 640px;">
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div if:false={showSalesModal} class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{labels.Heading}</h2>
+                </header>
+                <div if:false={isPrescriptionFilled}>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <center><h2>{labels.NoPrescription}</h2><br/>
+                        </center>
+                    </div>
+                </div>
+                <div if:true={isPrescriptionFilled}>
+                    <div if:false={addressSelected} class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                        <center><h2>{labels.NoAddressSelected}</h2><br/>
+                        </center>
+                    </div>
+                    <div if:true={addressSelected} class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                        <center><h2>{labels.AddressSelected}</h2><br/>
+                        </center>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <div if:true={isPrescriptionFilled}>
+                        <lightning-button if:false={addressSelected} label={labels.Cancel} variant="neutral" onclick={closeModal}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <lightning-button if:true={addressSelected} label={labels.No} variant="neutral" onclick={handleNoClick}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <lightning-button if:false={addressSelected} label={labels.Finish} variant="brand" onclick={handleFinishClick}></lightning-button>
+                        <lightning-button if:true={addressSelected} label={labels.Yes} variant="brand" onclick={handleYesClick}></lightning-button>
+                    </div>
+                    <div if:false={isPrescriptionFilled}>
+                        <lightning-button label={labels.Cancel} variant="neutral" onclick={closeModal}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <lightning-button label={labels.Finish} variant="brand" onclick={handleFinishClick}></lightning-button>
+                    </div>
+                </footer>
+            </div>
+
+            <!-- Sales Modal -->
+
+            <div if:true={showSalesModal} class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                        size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                    </lightning-button-icon>
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">{labels.Heading}</h2>
+                </header>
+                <div if:false={addressSelected} class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+                    <center><h2>{labels.NoAddressSelected}</h2><br/>
+                    </center>
+                </div>
+                <div if:true={addressSelected} class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
+                    <center><h2>{labels.AddressSelected}</h2><br/>
+                    </center>
+                    <center><h2>{labels.SelectDateSales}</h2></center>
+                    <br>
+                    <div class="slds-align_absolute-center">
+                        <lightning-input type="datetime" value={todayDatetime} onchange={handleDateChange}></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button if:false={addressSelected} label={labels.Cancel} variant="neutral" onclick={closeModal}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <lightning-button if:true={addressSelected} label={labels.No} variant="neutral" onclick={handleNoClick}></lightning-button>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <lightning-button if:false={addressSelected} label={labels.Finish} variant="brand" onclick={handleFinishClick}></lightning-button>
+                    <lightning-button if:true={addressSelected} label={labels.Yes} variant="brand" onclick={handleYesClick}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+</template>

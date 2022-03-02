@@ -1,0 +1,7 @@
+.biggerButton {
+    padding: 2px 50px;
+}
+
+.importantScrolling {
+        overflow-y: scroll !important;
+}

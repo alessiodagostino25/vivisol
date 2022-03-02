@@ -1,0 +1,29 @@
+<aura:component implements="lightning:isUrlAddressable,force:appHostable,force:hasRecordId,flexipage:availableForAllPageTypes">
+    <aura:attribute name="url" type="String"/>
+    <aura:attribute name="recordId" type="String"/>
+    <lightning:workspaceAPI aura:id="workspace" />
+    
+    <!-- Specify the pageReference type. Only object is supported. -->
+    <aura:attribute name="pageReference" type="Object"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <!-- Implement the navigation service. -->
+    <lightning:navigation aura:id="navService"/>
+    
+    <!-- pageReferenceUtil component -->
+    <lightning:pageReferenceUtils aura:id="pageRefUtils"/>
+
+    <lightning:card>
+        <lightning:tabset>
+            <lightning:tab label="Order Production">
+                <div class="slds-text-align_center">
+                    <div class="slds-text-heading_small">Start the Order production process.</div>
+                </div>
+                <br/>
+                <div class="slds-text-align_center">
+                    <lightning:button variant="brand" label="Go to Order process" title="Brand action" onclick="{! c.handleClick }" />
+                </div>
+            </lightning:tab>
+        </lightning:tabset>
+    </lightning:card>
+</aura:component>

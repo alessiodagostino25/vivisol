@@ -1,0 +1,19 @@
+<template>
+    <lightning-card>
+        <lightning-tabset>
+            <lightning-tab label="New Work Order Line Item">
+                <div class="slds-text-align_center slds-p-around_small">
+                    <lightning-icon icon-name="action:add_relationship" alternative-text="Work Order Line Item" size="large"></lightning-icon>
+                </div>
+
+                <div class="slds-text-align_center slds-p-around_small">
+                    <lightning-button variant="brand" label="New Work Order Line Item" title="New Work Order Line Item" onclick={handleClick}></lightning-button>
+                </div>
+            </lightning-tab>
+        </lightning-tabset>
+    </lightning-card>
+
+    <div if:true={showModal}>
+        <c-woli-creation-modal record-id={recordId} onclose={handleClose}></c-woli-creation-modal>
+    </div>
+</template>

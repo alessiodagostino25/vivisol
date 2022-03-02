@@ -1,0 +1,120 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                    size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                </lightning-button-icon>
+                <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{labels.AddressConfiguration}</h2>
+            </header>
+
+            <div if:false={editMode} class="slds-modal__content slds-p-around_medium slds-is-relative" id="modal-content-id-1">
+                <div if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                </div>
+
+                <lightning-record-edit-form
+                    object-api-name="Account_Treatment_Address__c" onsuccess={handleSuccess} onerror={handleError} onsubmit={handleSubmit}>
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-messages>
+                        </lightning-messages>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>Information</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field disabled field-name="Account__c" type="Lookup(Account)" value={accountId}></lightning-input-field>
+                            <lightning-input-field disabled field-name="Account_Treatment__c" type="Master-Detail(Account Treatment)" 
+                                value={accountTreatmentId}></lightning-input-field>
+                            <!--<lightning-input-field field-name="Address__c" type="Text Area(255)"></lightning-input-field>-->
+                            <lightning-input-field field-name="Start_Date__c" type="Date"></lightning-input-field>
+                            <!--<lightning-input-field field-name="Deactivation_date__c" type="Date/Time"></lightning-input-field>-->
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Default__c" type="Checkbox"></lightning-input-field>
+                            <!-- <lightning-input-field field-name="Location__c" type="Lookup(Location)"></lightning-input-field> -->
+                            <c-lookup
+                                errors={errors}
+                                onsearchforaccount={handleSearch}
+                                account-id={accountId}
+                                onselectionchange={handleSelectionChange}
+                                label="Location"
+                                placeholder="Search Locations..."
+                                is-multi-entry={isMultiEntry}
+                                required
+                            >
+                            </c-lookup>
+                            <!--<lightning-input-field field-name="Name" type="Text(80)"></lightning-input-field>-->
+                            <lightning-input-field field-name="End_Date__c" type="Date"></lightning-input-field>
+                            <lightning-input-field style="display: none;" field-name="Location__c" type="Lookup(Location)"></lightning-input-field>
+                            <lightning-input-field style="display: none;" field-name="Name" type="Text(80)"></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_10-of-12"><span></span></div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button
+                                variant="brand"
+                                type="submit"
+                                name="update"
+                                label="Save">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+
+            <!-- Edit Mode -->
+
+            <div if:true={editMode} class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                <lightning-record-edit-form
+                    object-api-name="Account_Treatment_Address__c" record-id={selectedAddressId} onsuccess={handleSuccess} 
+                    onerror={handleError}> <!-- Edit adding record if present to edit Address -->
+                    <div class="slds-col slds-size_1-of-1">
+                        <lightning-messages>
+                        </lightning-messages>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                <p>Information</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field disabled field-name="Account__c" type="Lookup(Account)" value={accountId}></lightning-input-field>
+                            <lightning-input-field disabled field-name="Account_Treatment__c" type="Master-Detail(Account Treatment)" 
+                                value={accountTreatmentId}></lightning-input-field>
+                            <!--<lightning-input-field field-name="Address__c" type="Text Area(255)"></lightning-input-field>-->
+                            <lightning-input-field field-name="Start_Date__c" type="Date"></lightning-input-field>
+                            <!--<lightning-input-field field-name="Deactivation_date__c" type="Date/Time"></lightning-input-field>-->
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input-field field-name="Default__c" type="Checkbox"></lightning-input-field>
+                            <lightning-input-field required field-name="Location__c" type="Lookup(Location)"></lightning-input-field>
+                            <!--<lightning-input-field field-name="Name" type="Text(80)"></lightning-input-field>-->
+                            <lightning-input-field field-name="End_Date__c" type="Date"></lightning-input-field>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-p-around_small">
+                        <div class="slds-col slds-size_10-of-12"><span></span></div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button label="Cancel" onclick={closeModal}></lightning-button>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <lightning-button
+                                variant="brand"
+                                type="submit"
+                                name="update"
+                                label="Save">
+                            </lightning-button>
+                        </div>
+                    </div>
+                </lightning-record-edit-form>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

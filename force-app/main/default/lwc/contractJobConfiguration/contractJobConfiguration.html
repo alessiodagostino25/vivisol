@@ -1,0 +1,199 @@
+<template>
+    <template if:true={page2}>
+        <div class="slds-grid slds-wrap slds-m-around_small">
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-grid slds-grid_align-center slds-m-top_medium">
+                    <div class="slds-col">
+                        <lightning-button variant="brand" label={label.NewJobBtn} title="Primary action"
+                            onclick={handleClickCreateJob}>
+                        </lightning-button>
+                    </div>
+                    <div if:true={showAssetButton}>
+                        <div class="slds-col">
+                            <lightning-button label={label.AssetManagement} variant="brand"
+                                class="slds-m-around_medium" onclick={handleSelectAssets}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </div>
+                <br>
+
+                <template for:each={contractTreatmentJob.data} for:item="Job">
+                    <c-contract-treatment-job-detail key={Job.Id} page2a={page2a}
+                        contract-framework-id={contractFrameworkId} contract-treatment-job-id={Job.Id}
+                        job-name={Job.Name} job-detail={jobDetail}
+                        contract-treatment-record-id={contractTreatmentRecordId}
+                        corporate-treatment-name={Job.Corporate_Treatment_Job__r.Name}
+                        contract-treatment-product-code={contractTreatmentProductCode} onentrysla={handleClickViewSLA}
+                        onpassjobname={handlePassJobName} onviewproductconfig={handleClickViewProduct}
+                        ondeletejob={handleEventDeleteJob} corporate-treatment-job-id={Job.Corporate_Treatment_Job__c}
+                        framework-is-active={frameworkIsActive} framework-is-inactive={frameworkIsInactive}
+                        ondefaultbomconfiguration={handleDefaultBOMConfiguration} show-asset-button={showAssetButton}>
+                    </c-contract-treatment-job-detail>
+                </template>
+            </div>
+        </div>
+
+        <template if:true={viewCreateJobModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Delete"
+                            size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                        </lightning-button-icon>
+                        <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{label.NewCTJ}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" style="overflow: initial" id="modal-content-id-1">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-p-around_medium">
+                                <lightning-record-edit-form object-api-name="Contract_Treatment_Job__c"
+                                    onerror={handleError} onsuccess={handleSuccessModal} onsubmit={handleSubmitCreationModal}>
+                                    <div class="slds-grid slds-wrap slds-p-around_medium">
+                                        <div class="slds-col slds-size_1-of-1 slds-page-header slds-m-bottom_small">
+                                            <p>{label.Info}</p>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1">
+                                            <lightning-input-field field-name="Corporate_Treatment_Job__c"
+                                                type="Lookup(Corporate Treatment Job)"
+                                                onchange={handleCorporateTreatmentSelection} required>
+                                            </lightning-input-field>
+                                            <lightning-input-field field-name="Contract_Treatment__c" disabled
+                                                value={contractTreatmentRecordId}>
+                                            </lightning-input-field>
+                                            <c-lookup
+                                                errors={errors}
+                                                onsearchforcontractframework={handleProductCodeSearch}
+                                                contract-framework-id={contractFrameworkId}
+                                                onselectionchange={handleContractTreatmentJobCodeSelection}
+                                                label="Contract Treatment Job Code"
+                                                placeholder="Search Products..."
+                                                is-multi-entry={isMultiEntry}
+                                                required
+                                            >
+                                            </c-lookup>
+                                            <lightning-input-field style="display: none;" field-name="Contract_Treatment_Job_Code__c"
+                                                type="Lookup(Product)">
+                                            </lightning-input-field>
+                                            <lightning-input-field style="display: none;" field-name="Contract_Framework__c"
+                                                type="Lookup(Contract Framework)"
+                                                value={contractFrameworkId}>
+                                            </lightning-input-field>
+                                        </div>
+                                    </div>
+
+                                    <lightning-button type="submit" style="display: none;"></lightning-button>
+                                </lightning-record-edit-form>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <div class="slds-grid slds-wrap slds-col slds-size_1-of-1 slds-grid_align-spread ">
+                            <div class="slds-col">
+                                <lightning-button disabled={addAndCloneDisabled} variant="brand"
+                                    label={label.CloneJobBtn} onclick={handleClickCloneJob}>
+                                </lightning-button>
+                            </div>
+                            <div class="slds-col">
+                                <lightning-button variant="brand" disabled={addAndCloneDisabled} type="submit" label={label.AddJobBtn} onclick={handleFormSubmitClick}>
+                                </lightning-button>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <template if:true={cloneJobModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open slds-modal_medium">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon icon-name="utility:close" onclick={closeModal} alternative-text="Close"
+                            size="large" variant="bare-inverse" class="slds-modal__close" title="close">
+                        </lightning-button-icon>
+                        <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">{label.CloneCTJ}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+
+                        <h1 class="slds-text-heading_small">{label.CTJCloning}</h1>
+
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-p-around_medium lgc-bg">
+                                <div class="slds-is-relative slds-align_absolute-center">
+                                    <div class="spinner">
+                                        <template if:false={clonableContractTreatmentJobs.data}>
+                                            <lightning-spinner alternative-text="Loading" size="medium">
+                                            </lightning-spinner>
+                                        </template>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <lightning-input name="enter-search" label=" " type="search" placeholder="Search Contract Treatment Job..." value={searchValue}
+                                    onchange={handleSearchChange} ></lightning-input>
+                                </div>
+                                <br>
+
+                                <div if:false={isTableEmpty}>
+
+                                    <lightning-datatable 
+                                        key-field="Id" 
+                                        data={clonableContractTreatmentJobs.data}
+                                        columns={columns} 
+                                        onrowselection={handleRowSelection}
+                                        max-row-selection="1">
+                                    </lightning-datatable>
+                                </div>
+                                <div if:true={isTableEmpty}>
+                                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_default" role="alert">
+                                        <span class="slds-assistive-text">Warning</span>
+                                        <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="">
+                                        </span>
+                                        <h2>{label.NoElements}
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer slds-modal__footer_directional">
+                        <div class="slds-grid slds-wrap slds-float_left">
+                            <button class="slds-button slds-button_brand"
+                                onclick={handleBackFromClone}>{label.Back}
+                            </button>
+                        </div>
+                        <div class="slds-grid slds-wrap slds-float_right">
+                            <button class="slds-button slds-button_brand"
+                                onclick={handleSuccessCloneJob} disabled={isCloneJobButtonDisabled}>{label.Clone}
+                            </button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <!-- Asset Management Modal -->
+
+        <template if:true={showAssetSelectionModal}>
+            <c-contract-treatment-job-asset-selection 
+                contract-treatment-id={contractTreatmentRecordId}
+                onclose={handleCloseAssetModal}
+                framework-is-active={frameworkIsActive}>
+            </c-contract-treatment-job-asset-selection>
+        </template>
+
+    </template>
+    <c-sla-configuration page2a={page2a} contract-treatment-record-id={contractTreatmentRecordId}
+        contract-treatment-job-id={contractTreatmentJobId} contract-treatment-sla-id={contractTreatmentSlaId}
+        contract-treatment-job-name={contractTreatmentJobName} framework-is-active={frameworkIsActive}
+        framework-is-inactive={frameworkIsInactive}>
+    </c-sla-configuration>
+    <c-product-configuration if:true={page2b} page2b={page2b} contract-framework-record-id={contractFrameworkId}
+        contract-treatment-job-id={contractTreatmentJobId} onfinishedconfig={handleFinishedProdConfig}
+        onexitconfig={handleExitConfig} contract-treatment-job-name={contractTreatmentJobName}
+        framework-is-active={frameworkIsActive} framework-is-inactive={frameworkIsInactive}>
+    </c-product-configuration>
+</template>
